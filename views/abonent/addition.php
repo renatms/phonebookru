@@ -5,15 +5,15 @@ use yii\helpers\html;
 
 <?php $form = ActiveForm::begin()?>
 
-    <?=$form->field($query, 'name')->label('Имя')?>
-    <?=$form->field($query, 'sname')->label('Фамилия')?>
-    <?=$form->field($query, 'oname')->label('Отчество')?>
-    <?=$form->field($query, 'birth')->label('Дата рождения')->
+    <?=$form->field($abonent, 'name')->label('Имя')?>
+    <?=$form->field($abonent, 'sname')->label('Фамилия')?>
+    <?=$form->field($abonent, 'oname')->label('Отчество')?>
+    <?=$form->field($abonent, 'birth')->label('Дата рождения')->
         widget(\yii\widgets\MaskedInput::className(), [
         'mask' => '99.99.9999 г.',
         ]);?>
 
-    <?=$form->field($query2, 'number')->label('Номер телефона')->
+    <?=$form->field($phone, 'number')->label('Номер телефона')->
         widget(\yii\widgets\MaskedInput::className(), [
         'mask' => '+7 (999) 999 99 99',
         ]);?>    

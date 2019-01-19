@@ -5,41 +5,41 @@ use yii\helpers\html;
 
 <?php $form = ActiveForm::begin()?>
 
-    <?=$form->field($query, 'name')->label('Имя')?>
-    <?=$form->field($query, 'sname')->label('Фамилия')?>
-    <?=$form->field($query, 'oname')->label('Отчество')?>
-    <?=$form->field($query, 'birth')->label('Дата рождения')->
+    <?=$form->field($abonent, 'name')->label('Имя')?>
+    <?=$form->field($abonent, 'sname')->label('Фамилия')?>
+    <?=$form->field($abonent, 'oname')->label('Отчество')?>
+    <?=$form->field($abonent, 'birth')->label('Дата рождения')->
         widget(\yii\widgets\MaskedInput::className(), [
         'mask' => '99.99.9999 г.',
         ]);?>
 
 <table>
 
-<?php foreach ($query2 as $index => $qx): ?>
+<?php foreach ($phone as $index => $ph): ?>
     <tr>
             <td>
-                    <?=$form->field($qx, "[$index]number")->label('Номер телефона:');?>                                                
+                    <?=$form->field($ph, "[$index]number")->label('Номер телефона:');?>
             </td>
             <td>
                                
-                    <?php echo $form->field($qx, "[$index]group_id")->dropDownList($data)
+                    <?php echo $form->field($ph, "[$index]group_id")->dropDownList($data)
                             ->label('Тип номера'); ?>
             </td>
             <td>                
-                <a href="<?=yii\helpers\Url::to(['abonent/delete','id'=>$qx->id])?>">Удалить</a>
+                <a href="<?=yii\helpers\Url::to(['abonent/delete','id'=>$ph->id])?>">Удалить</a>
             </td>
     </tr>
 
 <?php endforeach;?>     
     <tr>
         <td>
-            <?=$form->field($queryn, 'number')->label('Номер телефона')->
+            <?=$form->field($newphone, 'number')->label('Номер телефона')->
             widget(\yii\widgets\MaskedInput::className(), [
             'mask' => '+7 (999) 999 99 99',
             ]);?>
         </td>
         <td>
-            <?php echo $form->field($queryn, 'group_id')->dropDownList($data)
+            <?php echo $form->field($newphone, 'group_id')->dropDownList($data)
                             ->label('Тип номера'); ?>
         </td>
         <td align="justify"> 

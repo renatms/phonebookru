@@ -2,8 +2,8 @@
 
 return [
     'class' => 'yii\db\Connection',
-    'dsn' => 'mysql:host=localhost:3306;dbname=phonedb',
-    'username' => '',
+    'dsn' => 'mysql:host=localhost;dbname=phonedb',
+    'username' => 'root',
     'password' => '',
     'charset' => 'utf8',
 

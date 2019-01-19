@@ -2,10 +2,7 @@
 
 namespace app\controllers;
 use Yii;
-use yii\helpers\html;
-use yii\helpers\ArrayHelper;
 use yii\base\Model;
-
 use app\models\Abonent;
 use app\models\Phones;
 use app\models\Groups;
@@ -14,37 +11,34 @@ class AbonentController extends AppController
 {   
       public function actionDelete(){
 
-            $i=$_GET['id'];
-            $query2 = Phones::find()->where(['id'=>$i])->one();            
-            $query2->delete();
-            //переход на предыдущую страницу
+            $i=Yii::$app->request->get('id');
+            $phone = Phones::find()->where(['id'=>$i])->one();
+            $phone->delete();
+
             return $this->redirect(Yii::$app->request->referrer);
     }
     
     public function actionAddition(){
         
-        $query = new Abonent();
-        $query2 = new Phones();
-        
-        $query3 = Groups::find()->all();
-        //$data = yii\helpers\ArrayHelper::map($query3, 'id', 'grypa');                  
+        $abonent = new Abonent();
+        $phone = new Phones();
+
         $q=(Yii::$app->request->post('submit1'));
         if ($q=='0'){                        
             return $this->redirect(['abonent/index']);
         }
         if ($q=='1'){            
-            $query->load(Yii::$app->request->post());
-            $query2->load(Yii::$app->request->post());                        
+            $abonent->load(Yii::$app->request->post());
+            $phone->load(Yii::$app->request->post());
                                     
-            $query->save(false);
-            $query2->abonent_id = $query->id;
-            $query2->group_id = 1;
-            $query2->save(false);     
+            $abonent->save(false);
+            $phone->abonent_id = $abonent->id;
+            $phone->group_id = 1;
+            $phone->save(false);
             return $this->redirect(['abonent/index']);
         }
-        
-        
-        return $this->render('addition', ['query' => $query, 'query2' => $query2]);
+
+        return $this->render('addition', ['abonent' => $abonent, 'phone' => $phone]);
     }
     
     public function actionIndex(){
@@ -62,19 +56,19 @@ class AbonentController extends AppController
 
     public function actionDetail(){
 
-        $i=$_GET['id'];
+        $i=Yii::$app->request->get('id');
         
-        $query = Abonent::findOne($i);	
+        $abonent = Abonent::findOne($i);
 
-        $query2 = Phones::find()->where(['abonent_id'=>$i])->all();            
+        $phone = Phones::find()->where(['abonent_id'=>$i])->all();
 
-        $query3 = Groups::find()->all();
-        $data = yii\helpers\ArrayHelper::map($query3, 'id', 'grypa');   
+        $group = Groups::find()->all();
+        $data = yii\helpers\ArrayHelper::map($group, 'id', 'grypa');
                 
-        $queryn = new Phones();
+        $newphone = new Phones();
 
         $q=(Yii::$app->request->post('submit1'));
-        if ($query->load(Yii::$app->request->post())){   
+        if ($abonent->load(Yii::$app->request->post())){
             
             if($q=='0'){
                 return $this->redirect(['abonent/index']);
@@ -82,38 +76,36 @@ class AbonentController extends AppController
             
             if($q=='1'){
         
-                $isValid = $query->validate();            
+                $isValid = $abonent->validate();
 
-                Model::loadMultiple($query2, Yii::$app->request->post());
-                foreach ($query2 as $setting) {
+                Model::loadMultiple($phone, Yii::$app->request->post());
+                foreach ($phone as $setting) {
                     $setting->save(false);                
                     }
 
                 if ($isValid) {
-                    $query->save(false);                                          
-                    //return $this->refresh();
+                    $abonent->save(false);
                     }
                 
-            }    //***********************************
+            }
                 
             if ($q == '2') {
-                $queryn->load(Yii::$app->request->post());
+                $newphone->load(Yii::$app->request->post());
 
-                $queryn->abonent_id = $query->id;
-                $queryn->save(false);
+                $newphone->abonent_id = $abonent->id;
+                $newphone->save(false);
                 return $this->refresh();
             }
-            
-                //****************************
+
             if ($q == '3') {
-                $query->delete();
+                $abonent->delete();
                 return $this->redirect(['abonent/index']);
             }                       
         
         } 
         
-        return $this->render('detail.php', ['query' => $query, 'query2' => $query2,
-            'data' => $data, 'queryn' => $queryn]);    
+        return $this->render('detail.php', ['abonent' => $abonent, 'phone' => $phone,
+            'data' => $data, 'newphone' => $newphone]);
                 
     }                                       
 

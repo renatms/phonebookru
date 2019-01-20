@@ -1,5 +1,7 @@
-   
 <?php
+/* @var $this yii\web\View */
+/* @var $user \frontend\models\domains\User */
+/* @var $transactionsDataProvider yii\data\ActiveDataProvider */
     use yii\widgets\ActiveForm;
     use yii\helpers\Html;
     $this->title = Yii::$app->name;

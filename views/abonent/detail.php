@@ -1,14 +1,17 @@
 <?php
+/* @var $this yii\web\View */
+/* @var $user \frontend\models\domains\User */
+/* @var $transactionsDataProvider yii\data\ActiveDataProvider */
 use yii\widgets\ActiveForm;
 use yii\helpers\html;
 ?>
 
 <?php $form = ActiveForm::begin()?>
 
-    <?=$form->field($abonent, 'name')->label('Имя')?>
-    <?=$form->field($abonent, 'sname')->label('Фамилия')?>
-    <?=$form->field($abonent, 'oname')->label('Отчество')?>
-    <?=$form->field($abonent, 'birth')->label('Дата рождения')->
+    <?=$form->field($abonent, 'name')?>
+    <?=$form->field($abonent, 'sname')?>
+    <?=$form->field($abonent, 'oname')?>
+    <?=$form->field($abonent, 'birth')->
         widget(\yii\widgets\MaskedInput::className(), [
         'mask' => '99.99.9999 г.',
         ]);?>
@@ -18,7 +21,7 @@ use yii\helpers\html;
 <?php foreach ($phone as $index => $ph): ?>
     <tr>
             <td>
-                    <?=$form->field($ph, "[$index]number")->label('Номер телефона:');?>
+                    <?=$form->field($ph, "[$index]number")?>
             </td>
             <td>
                                
@@ -33,7 +36,7 @@ use yii\helpers\html;
 <?php endforeach;?>     
     <tr>
         <td>
-            <?=$form->field($newphone, 'number')->label('Номер телефона')->
+            <?=$form->field($newphone, 'number')->
             widget(\yii\widgets\MaskedInput::className(), [
             'mask' => '+7 (999) 999 99 99',
             ]);?>
@@ -53,8 +56,7 @@ use yii\helpers\html;
 <table>
     <tr>
         <td>
-            <?= Html::submitButton('Назад',
-        [ 'name'=>'submit1', 'value' => '0', 'class' => 'btn btn-primary pull-right']) ?>            
+            <?= Html::a('Назад', ['/abonent/index'], ['class'=>'btn btn-primary']) ?>
         </td>
         <td>
 <?= Html::submitButton('Обновить',

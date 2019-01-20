@@ -3,31 +3,20 @@
 namespace app\controllers;
 use Yii;
 use yii\base\Model;
+use yii\filters\AccessControl;
+use yii\web\Controller;
 use app\models\Abonent;
 use app\models\Phones;
 use app\models\Groups;
 
-class AbonentController extends AppController
-{   
-      public function actionDelete(){
-
-            $i=Yii::$app->request->get('id');
-            $phone = Phones::find()->where(['id'=>$i])->one();
-            $phone->delete();
-
-            return $this->redirect(Yii::$app->request->referrer);
-    }
-    
+class AbonentController extends Controller
+{
     public function actionAddition(){
         
         $abonent = new Abonent();
         $phone = new Phones();
 
-        $q=(Yii::$app->request->post('submit1'));
-        if ($q=='0'){                        
-            return $this->redirect(['abonent/index']);
-        }
-        if ($q=='1'){            
+        if (Yii::$app->request->post()){
             $abonent->load(Yii::$app->request->post());
             $phone->load(Yii::$app->request->post());
                                     
@@ -44,7 +33,7 @@ class AbonentController extends AppController
     public function actionIndex(){
         
             $abonents = Abonent::find()->all();             
-            $q=(Yii::$app->request->post('submit1'));
+            $q=Yii::$app->request->post('submit1');
             if ($q == 'add'){
                 return $this->redirect(['abonent/addition']);
             }
@@ -54,13 +43,11 @@ class AbonentController extends AppController
             ]);
     }
 
-    public function actionDetail(){
+    public function actionDetail($id){
 
-        $i=Yii::$app->request->get('id');
-        
-        $abonent = Abonent::findOne($i);
+        $abonent = Abonent::findOne($id);
 
-        $phone = Phones::find()->where(['abonent_id'=>$i])->all();
+        $phone = Phones::find()->where(['abonent_id'=>$id])->all();
 
         $group = Groups::find()->all();
         $data = yii\helpers\ArrayHelper::map($group, 'id', 'grypa');
@@ -69,11 +56,7 @@ class AbonentController extends AppController
 
         $q=(Yii::$app->request->post('submit1'));
         if ($abonent->load(Yii::$app->request->post())){
-            
-            if($q=='0'){
-                return $this->redirect(['abonent/index']);
-            }
-            
+
             if($q=='1'){
         
                 $isValid = $abonent->validate();

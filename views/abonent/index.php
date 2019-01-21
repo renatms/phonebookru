@@ -1,5 +1,7 @@
 <?php
 /* @var $this yii\web\View */
+/* @var $form yii\widgets\ActiveForm */
+/* @var $abonents app\models\Abonent[] */
 
 use yii\widgets\ActiveForm;
 use yii\helpers\Html;

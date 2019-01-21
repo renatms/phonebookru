@@ -1,6 +1,8 @@
 <?php
 /* @var $this yii\web\View */
 /* @var $form yii\widgets\ActiveForm */
+/* @var $abonent app\models\Abonent[] */
+/* @var $phone app\models\Phones[] */
 
 use yii\widgets\ActiveForm;
 use yii\helpers\html;

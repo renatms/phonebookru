@@ -11,6 +11,11 @@ use app\models\Groups;
 
 class AbonentController extends Controller
 {
+    public function actionDelete($id){
+        $phone = Phones::find()->where(['id'=>$id])->one();
+        $phone->delete();
+        return $this->redirect(Yii::$app->request->referrer);
+    }
     public function actionAddition(){
         
         $abonent = new Abonent();
@@ -54,7 +59,7 @@ class AbonentController extends Controller
                 
         $newphone = new Phones();
 
-        $q=(Yii::$app->request->post('submit1'));
+        $q=Yii::$app->request->post('submit1');
         if ($abonent->load(Yii::$app->request->post())){
 
             if($q=='1'){

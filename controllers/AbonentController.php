@@ -76,10 +76,8 @@ class AbonentController extends Controller
                     }
                 
             }
-                
-            if ($q == '2') {
-                $newphone->load(Yii::$app->request->post());
-
+            $newphone->load(Yii::$app->request->post());
+            if ($q == '2' && $newphone->number!="") {
                 $newphone->abonent_id = $abonent->id;
                 $newphone->save(false);
                 return $this->refresh();

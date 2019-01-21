@@ -1,9 +1,12 @@
 <?php
 /* @var $this yii\web\View */
-/* @var $user \frontend\models\domains\User */
-/* @var $transactionsDataProvider yii\data\ActiveDataProvider */
+/* @var $form yii\widgets\ActiveForm */
+
 use yii\widgets\ActiveForm;
 use yii\helpers\html;
+
+$this->title = 'Подробнее';
+$this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <?php $form = ActiveForm::begin()?>

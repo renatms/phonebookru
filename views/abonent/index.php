@@ -1,10 +1,10 @@
 <?php
 /* @var $this yii\web\View */
-/* @var $user \frontend\models\domains\User */
-/* @var $transactionsDataProvider yii\data\ActiveDataProvider */
-    use yii\widgets\ActiveForm;
-    use yii\helpers\Html;
-    $this->title = Yii::$app->name;
+
+use yii\widgets\ActiveForm;
+use yii\helpers\Html;
+
+$this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <?php $form = ActiveForm::begin()?>
@@ -25,7 +25,7 @@
                     <td><?=$abonentx->birth?></td>
                     
                     <td>
-                    <a href="<?=yii\helpers\Url::to(['abonent/detail','id'=>$abonentx->id])?>">Подробно</a>                    
+                    <a href="<?=yii\helpers\Url::to(['abonent/detail','id'=>$abonentx->id])?>">Подробнее</a>
                     </td>
                 </tr>
             <?php endforeach;?>       

@@ -1,44 +1,70 @@
 <?php
 /* @var $this yii\web\View */
 /* @var $form yii\widgets\ActiveForm */
-/* @var $abonents app\models\Abonent[] */
 
 use yii\widgets\ActiveForm;
 use yii\helpers\Html;
+use yii\grid\GridView;
+use yii\data\ActiveDataProvider;
 
-$this->params['breadcrumbs'][] = $this->title;
+$this->params['breadcrumbs'][] = $this->title='Контакты';
 ?>
 
 <?php $form = ActiveForm::begin()?>
-<table class="table">
-    <thead>
-        <tr>            
-            <th>Имя</th>
-            <th>Фамилия</th>
-            <th>Отчество</th>
-            <th>Дата рождения</th>
-        </tr>
-        <tbody>
-            <?php foreach ($abonents as $abonentx): ?> 
-                <tr>
-                    <td><?=$abonentx->name?></td>
-                    <td><?=$abonentx->sname?></td>
-                    <td><?=$abonentx->oname?></td>
-                    <td><?=$abonentx->birth?></td>
-                    
-                    <td>
-                    <a href="<?=yii\helpers\Url::to(['abonent/detail','id'=>$abonentx->id])?>">Подробнее</a>
-                    </td>
-                </tr>
-            <?php endforeach;?>       
-                
-        </tbody>        
-    </thead>    
-                    
-</table>
 
-<?= Html::submitButton('Добавить',
-        [ 'name'=>'submit1', 'value' => 'add', 'class' => 'btn btn-primary']) ?>            
+<?php
+
+/** @var TYPE_NAME $searchModel */
+/** @var TYPE_NAME $dataProvider */
+echo GridView::widget([
+    'dataProvider' => $dataProvider,
+    'filterModel' => $searchModel,
+        'columns' => [
+            ['class' => 'yii\grid\SerialColumn'],
+            'second_name',
+            'first_name',
+            'middle_name',
+            [
+                'attribute' => 'birthday',
+                'format' => ['date', 'php:d.m.Y'],
+            ],
+
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'template' => '{view} {update}{delete}',
+                'buttons' => [
+
+                    'view' => function ($url, $model) {
+                        return Html::a('<span class="glyphicon glyphicon-eye-open"></span>',
+                            ['abonent/contact', 'id' => $model->id],
+                        [
+                            'title' => 'Посмотреть',
+                        ]);
+                    },
+                    'update' => function ($url, $model) {
+                        return Html::a('<span class="glyphicon glyphicon-pencil"></span>',
+                            ['abonent/detail', 'id' => $model->id],
+                        [
+                            'title' => 'Редактировать',
+                        ]);
+                    },
+                    'delete' => function ($url, $model) {
+                        return Html::a('<span class="glyphicon glyphicon-trash"></span>',
+                            ['abonent/deleteabonent', 'id' => $model->id],
+                            [
+                                'title' => 'Удалить',
+                                'data-confirm'=>"Хотите удалить?",
+                                'data-pjax'=>'1'
+                            ]);
+                    },
+                ],
+
+            ],
+        ],
+    ]);
+?>
+
+<?= Html::a('Добавить', ['/abonent/addition'], ['class'=>'btn btn-primary']) ?>
 <?php ActiveForm::end()?>    
     
 

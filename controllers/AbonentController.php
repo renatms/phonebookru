@@ -4,60 +4,100 @@ namespace app\controllers;
 use Yii;
 use yii\base\Model;
 use yii\filters\AccessControl;
+use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use app\models\Abonent;
-use app\models\Phones;
-use app\models\Groups;
+use app\models\Phone;
+use app\models\Group;
+
+//use yii\data\ActiveDataProvider;
 
 class AbonentController extends Controller
 {
+    public function actionContact($id){
+
+        $abonent = Abonent::find()->Where(['id'=>$id])->andWhere(['is_deleted'=>0])->one();
+
+        $phone = Phone::find()->where(['abonent_id'=>$id])->andWhere(['is_deleted'=>0])->all();
+
+        $group = Group::find()->all();
+        $data = ArrayHelper::map($group, 'id', 'grypa');
+
+        $q=Yii::$app->request->post('submit1');
+        if ($q == '1') {
+            $abonent->is_deleted = true;
+            $abonent->save();
+            return $this->redirect(['abonent/index']);
+        }
+        $abonent->birthday = Yii::$app->formatter->asDatetime($abonent->birthday, "php:d.m.Y");
+        $abonent->created_at = Yii::$app->formatter->asDatetime($abonent->created_at,'php:d.m.Y H:i:s');
+        $abonent->updated_at = Yii::$app->formatter->asDatetime($abonent->updated_at,'php:d.m.Y H:i:s');
+        foreach ($phone as $ph){
+            $ph->created_at = Yii::$app->formatter->asDatetime($ph->created_at,'php:d.m.Y H:i:s');
+            $ph->updated_at = Yii::$app->formatter->asDatetime($ph->updated_at,'php:d.m.Y H:i:s');
+        }
+
+        return $this->render('contact', [
+            'abonent' => $abonent, 'phone' =>$phone, 'data'=>$data
+        ]);
+    }
+
     public function actionDelete($id){
-        $phone = Phones::find()->where(['id'=>$id])->one();
-        $phone->delete();
+        $phone = Phone::find()->where(['id'=>$id])->one();
+        $phone->is_deleted=true;
+        $phone->save();
         return $this->redirect(Yii::$app->request->referrer);
     }
-    public function actionAddition(){
-        
-        $abonent = new Abonent();
-        $phone = new Phones();
 
-        if (Yii::$app->request->post()){
-            $abonent->load(Yii::$app->request->post());
+    public function actionDeleteabonent($id){
+        $abonent = Abonent::find()->where(['id'=>$id])->one();
+        $abonent->is_deleted=true;
+        $abonent->save();
+        return $this->redirect(Yii::$app->request->referrer);
+    }
+
+    public function actionAddition(){
+
+        $abonent = new Abonent();
+        $phone = new Phone();
+
+        $group = Group::find()->all();
+        $data = ArrayHelper::map($group, 'id', 'grypa');
+
+        if($abonent->load(Yii::$app->request->post())){
             $phone->load(Yii::$app->request->post());
-                                    
+            $abonent->birthday = Yii::$app->formatter->asDatetime($abonent->birthday, "php:Y.m.d");
+
             $abonent->save(false);
             $phone->abonent_id = $abonent->id;
-            $phone->group_id = 1;
             $phone->save(false);
             return $this->redirect(['abonent/index']);
         }
-
-        return $this->render('addition', ['abonent' => $abonent, 'phone' => $phone]);
+        return $this->render('addition.php', ['abonent' => $abonent, 'phone' => $phone,
+            'data' => $data]);
     }
     
     public function actionIndex(){
-        
-            $abonents = Abonent::find()->all();             
-            $q=Yii::$app->request->post('submit1');
-            if ($q == 'add'){
-                return $this->redirect(['abonent/addition']);
-            }
-                                    
-            return $this->render('index', [
-                    'abonents' => $abonents
-            ]);
+
+        $searchModel = new Abonent();
+        $dataProvider = $searchModel->search(Yii::$app->request->post());
+
+        return $this->render('index', [
+            'dataProvider' => $dataProvider,
+            'searchModel' => $searchModel,
+        ]);
     }
 
     public function actionDetail($id){
 
-        $abonent = Abonent::findOne($id);
+        $abonent = Abonent::find()->Where(['id'=>$id])->andWhere(['is_deleted'=>0])->one();
 
-        $phone = Phones::find()->where(['abonent_id'=>$id])->all();
+        $phone = Phone::find()->where(['abonent_id'=>$id])->andWhere(['is_deleted'=>0])->all();
 
-        $group = Groups::find()->all();
-        $data = yii\helpers\ArrayHelper::map($group, 'id', 'grypa');
-                
-        $newphone = new Phones();
+        $group = Group::find()->all();
+        $data = ArrayHelper::map($group, 'id', 'grypa');
+
+        $newphone = new Phone();
 
         $q=Yii::$app->request->post('submit1');
         if ($abonent->load(Yii::$app->request->post())){
@@ -72,9 +112,10 @@ class AbonentController extends Controller
                     }
 
                 if ($isValid) {
+                    $abonent->birthday = Yii::$app->formatter->asDatetime($abonent->birthday, "php:Y-m-d");
                     $abonent->save(false);
                     }
-                
+                return $this->redirect(['abonent/index']);
             }
             $newphone->load(Yii::$app->request->post());
             if ($q == '2' && $newphone->number!="") {
@@ -82,14 +123,9 @@ class AbonentController extends Controller
                 $newphone->save(false);
                 return $this->refresh();
             }
-
-            if ($q == '3') {
-                $abonent->delete();
-                return $this->redirect(['abonent/index']);
-            }                       
         
-        } 
-        
+        }
+        $abonent->birthday = Yii::$app->formatter->asDatetime($abonent->birthday, "php:d.m.Y");
         return $this->render('detail.php', ['abonent' => $abonent, 'phone' => $phone,
             'data' => $data, 'newphone' => $newphone]);
                 

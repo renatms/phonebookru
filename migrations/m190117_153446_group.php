@@ -2,53 +2,33 @@
 
 use yii\db\Migration;
 
-/**
- * Class m190117_153446_groups
- */
-class m190117_153446_groups extends Migration
+class m190117_153446_group extends Migration
 {
-    /**
-     * {@inheritdoc}
-     */
+
     public function safeUp()
     {
-		$this->createTable('groups', [
+		$this->createTable('group', [
             'id' => $this->primaryKey(),
             'grypa' => $this->string(20)->notNull(),            
         ]);
 		
-		$this->batchInsert('groups', ['grypa'], [
+		$this->batchInsert('group', ['grypa'], [
                                                         ['Домашний'],
                                                         ['Рабочий'],
                                                         ['Сотовый'],
                                                         ['Главный'],                                                        
                                                       ]
                            );
-
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function safeDown()
     {
-        echo "m190117_153446_groups cannot be reverted.\n";
+        $this->delete('group', ['id' => 1]);
+        $this->delete('group', ['id' => 2]);
+        $this->delete('group', ['id' => 3]);
+        $this->delete('group', ['id' => 4]);
+        $this->dropTable('group');
 
         return false;
     }
-
-    /*
-    // Use up()/down() to run migration code without a transaction.
-    public function up()
-    {
-
-    }
-
-    public function down()
-    {
-        echo "m190117_153446_groups cannot be reverted.\n";
-
-        return false;
-    }
-    */
 }

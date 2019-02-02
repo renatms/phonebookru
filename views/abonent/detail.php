@@ -2,28 +2,28 @@
 /* @var $this yii\web\View */
 /* @var $form yii\widgets\ActiveForm */
 /* @var $abonent app\models\Abonent[] */
-/* @var $phone app\models\Phones[] */
-/* @var $newphone app\models\Phones[] */
+/* @var $phone app\models\Phone[] */
+/* @var $newphone app\models\Phone[] */
 
 use yii\widgets\ActiveForm;
 use yii\helpers\html;
 
-$this->title = 'Подробнее';
-$this->params['breadcrumbs'][] = $this->title;
+$this->params['breadcrumbs'][] = $this->title='Подробнее';
 ?>
 
 <?php $form = ActiveForm::begin()?>
-
-    <?=$form->field($abonent, 'name')?>
-    <?=$form->field($abonent, 'sname')?>
-    <?=$form->field($abonent, 'oname')?>
-    <?=$form->field($abonent, 'birth')->
-        widget(\yii\widgets\MaskedInput::className(), [
-        'mask' => '99.99.9999 г.',
-        ]);?>
-
 <table>
-
+    <tr>
+        <td>
+    <?=$form->field($abonent, 'first_name')?>
+    <?=$form->field($abonent, 'second_name')?>
+    <?=$form->field($abonent, 'middle_name')?>
+    <?=$form->field($abonent, 'birthday')->
+        widget(\yii\widgets\MaskedInput::className(), [
+        'mask' => '99.99.9999',
+        ]);?>
+        </td>
+    </tr>
 <?php foreach ($phone as $index => $ph): ?>
     <tr>
             <td>
@@ -31,11 +31,16 @@ $this->params['breadcrumbs'][] = $this->title;
             </td>
             <td>
                                
-                    <?php echo $form->field($ph, "[$index]group_id")->dropDownList($data)
-                            ->label('Тип номера'); ?>
+                    <?php echo $form->field($ph, "[$index]group_id")->dropDownList($data)?>
             </td>
             <td>                
-                <a href="<?=yii\helpers\Url::to(['abonent/delete','id'=>$ph->id])?>">Удалить</a>
+                <?=Html::a('<span class="glyphicon glyphicon-trash"></span>',
+                    ['abonent/delete', 'id' => $ph->id],
+                    [
+                        'title' => 'Удалить',
+                        'data-confirm'=>"Хотите удалить?",
+                        'data-pjax'=>'1'
+                    ]);?>
             </td>
     </tr>
 
@@ -48,12 +53,11 @@ $this->params['breadcrumbs'][] = $this->title;
             ]);?>
         </td>
         <td>
-            <?php echo $form->field($newphone, 'group_id')->dropDownList($data)
-                            ->label('Тип номера'); ?>
+            <?php echo $form->field($newphone, 'group_id')->dropDownList($data) ?>
         </td>
         <td align="justify"> 
             <?= Html::submitButton("<span class='glyphicon glyphicon-plus' aria-hidden='true'></span>",
-        [ 'name'=>'submit1', 'value' => '2', 'class' => 'kv-action-btn']) ?>            
+        [ 'name'=>'submit1', 'value' => '2', 'class' => 'kv-action-btn']) ?>
         </td>
     </tr>
 </table>	
@@ -65,13 +69,10 @@ $this->params['breadcrumbs'][] = $this->title;
             <?= Html::a('Назад', ['/abonent/index'], ['class'=>'btn btn-primary']) ?>
         </td>
         <td>
-<?= Html::submitButton('Обновить',
-        [ 'name'=>'submit1', 'value' => '1', 'class' => 'btn btn-primary pull-right']) ?>     
+<?= Html::submitButton('Сохранить',
+        [ 'name'=>'submit1', 'value' => '1', 'class' => 'btn btn-primary pull-right']) ?>
         </td>
-        <td>
-<?= Html::submitButton('Удалить абонента',
-        [ 'name'=>'submit1', 'value' => '3', 'class' => 'btn btn-primary pull-right']) ?>                        
-        </td>    
+
     </tr>    
 </table>
 <?php ActiveForm::end()?>                

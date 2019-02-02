@@ -2,10 +2,7 @@
 
 /* @var $this yii\web\View */
 
-use yii\helpers\Html;
-
-$this->title = 'О справочнике';
-$this->params['breadcrumbs'][] = $this->title;
+$this->params['breadcrumbs'][] = $this->title='О справочнике';
 ?>
 <!DOCTYPE html>
 <html>

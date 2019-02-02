@@ -27,7 +27,10 @@ $this->params['breadcrumbs'][] = $this->title='Подробнее';
 <?php foreach ($phone as $index => $ph): ?>
     <tr>
             <td>
-                    <?=$form->field($ph, "[$index]number")?>
+                    <?=$form->field($ph, "[$index]number")->
+                    widget(\yii\widgets\MaskedInput::className(), [
+                        'mask' => '+7 (999) 999 99 99',
+                    ]);?>
             </td>
             <td>
                                

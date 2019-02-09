@@ -24,9 +24,6 @@ class m190117_153600_phone extends Migration
 
     public function safeDown()
     {
-        $this->delete('phone', ['id' => 1]);
         $this->dropTable('phone');
-
-        return false;
     }
 }

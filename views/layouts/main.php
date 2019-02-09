@@ -39,7 +39,7 @@ AppAsset::register($this);
         'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => [
             ['label' => 'Home', 'url' => ['/abonent/index']],
-            ['label' => 'About', 'url' => ['/site/about']],
+            ['label' => 'About', 'url' => ['/abonent/about']],
         ],
     ]);
     NavBar::end();

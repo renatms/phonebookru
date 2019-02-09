@@ -9,10 +9,10 @@ class m190117_153446_group extends Migration
     {
 		$this->createTable('group', [
             'id' => $this->primaryKey(),
-            'grypa' => $this->string(20)->notNull(),            
+            'type' => $this->string(20)->notNull(),
         ]);
 		
-		$this->batchInsert('group', ['grypa'], [
+		$this->batchInsert('group', ['type'], [
                                                         ['Домашний'],
                                                         ['Рабочий'],
                                                         ['Сотовый'],
@@ -23,12 +23,6 @@ class m190117_153446_group extends Migration
 
     public function safeDown()
     {
-        $this->delete('group', ['id' => 1]);
-        $this->delete('group', ['id' => 2]);
-        $this->delete('group', ['id' => 3]);
-        $this->delete('group', ['id' => 4]);
         $this->dropTable('group');
-
-        return false;
     }
 }

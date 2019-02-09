@@ -3,8 +3,7 @@
 namespace app\models;
 
 use Yii;
-use yii\db\ActiveRecord;
-use yii\behaviors\TimestampBehavior;
+use yii2tech\ar\softdelete\SoftDeleteBehavior;
 
 /**
  * This is the model class for table "phone".
@@ -13,14 +12,17 @@ use yii\behaviors\TimestampBehavior;
  * @property int $abonent_id
  * @property int $group_id
  * @property string $number
+ * @property string $created_at
+ * @property string $updated_at
+ * @property int $is_deleted
  *
  * @property Abonent $abonent
  * @property Group $group
  */
-class Phone extends ActiveRecord
+class Phone extends \yii\db\ActiveRecord
 {
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public static function tableName()
     {
@@ -28,14 +30,14 @@ class Phone extends ActiveRecord
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function rules()
     {
         return [
-            [['abonent_id', 'group_id'], 'required'],
-            [['abonent_id', 'group_id'], 'integer'],
-            [['created_at', 'updated_at', 'is_deleted'], 'safe'],
+            [['abonent_id', 'group_id', 'created_at', 'updated_at'], 'required'],
+            [['abonent_id', 'group_id', 'is_deleted'], 'integer'],
+            [['created_at', 'updated_at'], 'safe'],
             [['number'], 'string', 'max' => 20],
             [['abonent_id'], 'exist', 'skipOnError' => true, 'targetClass' => Abonent::className(), 'targetAttribute' => ['abonent_id' => 'id']],
             [['group_id'], 'exist', 'skipOnError' => true, 'targetClass' => Group::className(), 'targetAttribute' => ['group_id' => 'id']],
@@ -43,29 +45,33 @@ class Phone extends ActiveRecord
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
+            'id' => '№',
             'abonent_id' => 'Abonent ID',
             'group_id' => 'Тип номера',
             'number' => 'Номер телефона',
             'created_at' => 'Создан',
-            'updated_at' => 'Обновлен'
+            'updated_at' => 'Обновлен',
+            'is_deleted' => 'Is Deleted',
         ];
     }
 
     public function behaviors()
     {
         return [
+            'softDeleteBehavior' => [
+                'class' => SoftDeleteBehavior::className(),
+                'softDeleteAttributeValues' => [
+                    'is_deleted' => true
+                ],
+                'replaceRegularDelete' => true // mutate native `delete()` method
+            ],
             [
                 'class' => 'yii\behaviors\TimestampBehavior',
-                'attributes' => [
-                    ActiveRecord::EVENT_BEFORE_INSERT => ['created_at', 'updated_at'],
-                    ActiveRecord::EVENT_BEFORE_UPDATE => ['updated_at'],
-                ],
                 'value' => function () {
                     $date = new \yii\db\Expression('NOW()');
                     return $date;

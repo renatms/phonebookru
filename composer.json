@@ -17,7 +17,11 @@
         "php": ">=5.4.0",
         "yiisoft/yii2": "~2.0.14",
         "yiisoft/yii2-bootstrap": "~2.0.0",
-        "yiisoft/yii2-swiftmailer": "~2.0.0"
+        "yiisoft/yii2-swiftmailer": "~2.0.0",
+        "kartik-v/yii2-datecontrol": "1.9.0.x-dev",
+        "kartik-v/yii2-widget-datepicker": "1.4.x-dev",
+        "yiithings/yii2-softdelete": "dev-master",
+        "yii2tech/ar-softdelete": "dev-master"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

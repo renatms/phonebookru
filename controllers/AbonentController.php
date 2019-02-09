@@ -1,138 +1,174 @@
 <?php
 
 namespace app\controllers;
+
 use Yii;
 use yii\base\Model;
-use yii\filters\AccessControl;
-use yii\helpers\ArrayHelper;
-use yii\web\Controller;
 use app\models\Abonent;
 use app\models\Phone;
 use app\models\Group;
+use app\models\AbonentSearch;
+use yii\web\Controller;
+use yii\web\NotFoundHttpException;
+use yii\filters\VerbFilter;
 
-//use yii\data\ActiveDataProvider;
-
+/**
+ * AbonentController implements the CRUD actions for Abonent model.
+ */
 class AbonentController extends Controller
 {
-    public function actionContact($id){
-
-        $abonent = Abonent::find()->Where(['id'=>$id])->andWhere(['is_deleted'=>0])->one();
-
-        $phone = Phone::find()->where(['abonent_id'=>$id])->andWhere(['is_deleted'=>0])->all();
-
-        $group = Group::find()->all();
-        $data = ArrayHelper::map($group, 'id', 'grypa');
-
-        $q=Yii::$app->request->post('submit1');
-        if ($q == '1') {
-            $abonent->is_deleted = true;
-            $abonent->save();
-            return $this->redirect(['abonent/index']);
-        }
-        $abonent->birthday = Yii::$app->formatter->asDatetime($abonent->birthday, "php:d.m.Y");
-        $abonent->created_at = Yii::$app->formatter->asDatetime($abonent->created_at,'php:d.m.Y H:i:s');
-        $abonent->updated_at = Yii::$app->formatter->asDatetime($abonent->updated_at,'php:d.m.Y H:i:s');
-        foreach ($phone as $ph){
-            $ph->created_at = Yii::$app->formatter->asDatetime($ph->created_at,'php:d.m.Y H:i:s');
-            $ph->updated_at = Yii::$app->formatter->asDatetime($ph->updated_at,'php:d.m.Y H:i:s');
-        }
-
-        return $this->render('contact', [
-            'abonent' => $abonent, 'phone' =>$phone, 'data'=>$data
-        ]);
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return [
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'delete' => ['POST'],
+                ],
+            ],
+        ];
     }
 
-    public function actionDelete($id){
-        $phone = Phone::find()->where(['id'=>$id])->one();
-        $phone->is_deleted=true;
-        $phone->save();
-        return $this->redirect(Yii::$app->request->referrer);
-    }
-
-    public function actionDeleteabonent($id){
-        $abonent = Abonent::find()->where(['id'=>$id])->one();
-        $abonent->is_deleted=true;
-        $abonent->save();
-        return $this->redirect(Yii::$app->request->referrer);
-    }
-
-    public function actionAddition(){
-
-        $abonent = new Abonent();
-        $phone = new Phone();
-
-        $group = Group::find()->all();
-        $data = ArrayHelper::map($group, 'id', 'grypa');
-
-        if($abonent->load(Yii::$app->request->post())){
-            $phone->load(Yii::$app->request->post());
-            $abonent->birthday = Yii::$app->formatter->asDatetime($abonent->birthday, "php:Y.m.d");
-
-            $abonent->save(false);
-            $phone->abonent_id = $abonent->id;
-            $phone->save(false);
-            return $this->redirect(['abonent/index']);
-        }
-        return $this->render('addition.php', ['abonent' => $abonent, 'phone' => $phone,
-            'data' => $data]);
-    }
-    
-    public function actionIndex(){
-
-        $searchModel = new Abonent();
-        $dataProvider = $searchModel->search(Yii::$app->request->post());
+    /**
+     * Lists all Abonent models.
+     * @return mixed
+     */
+    public function actionIndex()
+    {
+        $searchModel = new AbonentSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
-            'dataProvider' => $dataProvider,
             'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
         ]);
     }
 
-    public function actionDetail($id){
+    /**
+     * Displays a single Abonent model.
+     * @param integer $id
+     * @return mixed
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    public function actionView($id)
+    {
+        return $this->render('view', [
+            'model' => $this->findModel($id), 'phone' => $this->findPhone($id)
+        ]);
+    }
 
-        $abonent = Abonent::find()->Where(['id'=>$id])->andWhere(['is_deleted'=>0])->one();
-
-        $phone = Phone::find()->where(['abonent_id'=>$id])->andWhere(['is_deleted'=>0])->all();
-
+    /**
+     * Creates a new Abonent model.
+     * If creation is successful, the browser will be redirected to the 'view' page.
+     * @return mixed
+     */
+    public function actionCreate()
+    {
+        $model = new Abonent();
+        $phone = new Phone();
         $group = Group::find()->all();
-        $data = ArrayHelper::map($group, 'id', 'grypa');
 
-        $newphone = new Phone();
+        if ($model->load(Yii::$app->request->post()) && $model->save(false)) {
+            $phone->load(Yii::$app->request->post());
+            $phone->abonent_id = $model->id;
+            $phone->save(false);
 
-        $q=Yii::$app->request->post('submit1');
-        if ($abonent->load(Yii::$app->request->post())){
-
-            if($q=='1'){
-        
-                $isValid = $abonent->validate();
-
-                Model::loadMultiple($phone, Yii::$app->request->post());
-                foreach ($phone as $setting) {
-                    $setting->save(false);                
-                    }
-
-                if ($isValid) {
-                    $abonent->birthday = Yii::$app->formatter->asDatetime($abonent->birthday, "php:Y-m-d");
-                    $abonent->save(false);
-                    }
-                return $this->redirect(['abonent/index']);
-            }
-            $newphone->load(Yii::$app->request->post());
-            if ($q == '2' && $newphone->number!="") {
-                $newphone->abonent_id = $abonent->id;
-                $newphone->save(false);
-                return $this->refresh();
-            }
-        
+            return $this->redirect(['view', 'id' => $model->id]);
         }
-        $abonent->birthday = Yii::$app->formatter->asDatetime($abonent->birthday, "php:d.m.Y");
-        return $this->render('detail.php', ['abonent' => $abonent, 'phone' => $phone,
-            'data' => $data, 'newphone' => $newphone]);
-                
-    }                                       
+        return $this->render('create', [
+            'model' => $model, 'phone'=>$phone, 'group' => $group
+        ]);
+    }
 
-}            
-            
-	
-	
+    /**
+     * Updates an existing Abonent model.
+     * If update is successful, the browser will be redirected to the 'view' page.
+     * @param integer $id
+     * @return mixed
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    public function actionUpdate($id)
+    {
+        $model = $this->findModel($id);
+        $phone = $this->findPhone($id);
+        $newphone = new Phone();
+        $group = Group::find()->all();
 
+        $submit=Yii::$app->request->post('submit1');
+        $newphone->load(Yii::$app->request->post());
+        if ($submit == 'add' && $newphone->number!="") {
+            $newphone->abonent_id = $model->id;
+            $newphone->save(false);
+            return $this->refresh();
+        }
+
+        if ($model->load(Yii::$app->request->post()) && $model->save(false)) {
+            Model::loadMultiple($phone, Yii::$app->request->post());
+            foreach ($phone as $setting) {
+                $setting->save(false);
+            }
+
+            return $this->redirect(['view', 'id' => $model->id]);
+        }
+
+        return $this->render('update', [
+            'model' => $model, 'phone'=>$phone, 'group' => $group, 'newphone' => $newphone
+        ]);
+    }
+
+    /**
+     * Deletes an existing Abonent model.
+     * If deletion is successful, the browser will be redirected to the 'index' page.
+     * @param integer $id
+     * @return mixed
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    public function actionDelete($id)
+    {
+        $model=$this->findModel($id);
+        $model->birthday=Yii::$app->formatter->asDatetime($model->birthday, "php:Y.m.d");
+        $model->delete();
+        return $this->redirect(['index']);
+    }
+
+    /**
+     * @return string
+     */
+    public function actionAbout()
+    {
+        return $this->render('about');
+    }
+
+    /**
+     * Finds the Abonent model based on its primary key value.
+     * If the model is not found, a 404 HTTP exception will be thrown.
+     * @param integer $id
+     * @return Abonent the loaded model
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    protected function findModel($id)
+    {
+        if (($model = Abonent::findOne($id)) !== null) {
+            return $model;
+        }
+
+        throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    /**
+     * @param $id
+     * @return array|\yii\db\ActiveRecord[]
+     * @throws NotFoundHttpException
+     */
+    protected function findPhone($id)
+    {
+        if (($phone = Phone::find()->andWhere(['abonent_id'=>$id])->andWhere(['is_deleted' => 0])->all()) !== null) {
+            return $phone;
+        }
+
+        throw new NotFoundHttpException('The requested page does not exist.');
+    }
+}

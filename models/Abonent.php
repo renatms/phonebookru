@@ -36,10 +36,11 @@ class Abonent extends ActiveRecord
     public function rules()
     {
         return [
-            [['first_name', 'second_name', 'middle_name', 'birthday', 'created_at', 'updated_at'], 'required'],
-            [['birthday', 'created_at', 'updated_at'], 'safe'],
+            [['first_name', 'second_name', 'middle_name', 'birthday'], 'required'],
+            [['created_at', 'updated_at', 'is_deleted'], 'safe'],
             [['first_name', 'second_name', 'middle_name'], 'string', 'max' => 50],
-            [['is_deleted'], 'string', 'max' => 1],
+            [['is_deleted'], 'integer', 'max' => 1],
+            [['birthday'], 'date','format'=>'php:d.m.Y'],
         ];
     }
 
@@ -96,7 +97,7 @@ class Abonent extends ActiveRecord
      */
     public function afterFind()
     {
-        $this->birthday = Yii::$app->formatter->asDatetime($this->birthday, "php:d.m.Y");
+        $this->birthday = Yii::$app->formatter->asDate($this->birthday, "php:d.m.Y");
         parent::afterFind();
     }
 
@@ -106,8 +107,26 @@ class Abonent extends ActiveRecord
      */
     public function beforeSave($insert)
     {
-        $this->birthday = Yii::$app->formatter->asDatetime($this->birthday, "php:Y.m.d");
-        return parent::beforeSave($insert);
+        if (parent::beforeSave($insert)) {
+            if ($insert) {
+                Yii::$app->session->setFlash('success', 'Запись добавлена!');
+                $this->birthday = Yii::$app->formatter->asDate($this->birthday, "php:Y-m-d");
+            } else {
+                Yii::$app->session->setFlash('success', 'Запись обновлена!');
+                $this->birthday = Yii::$app->formatter->asDate($this->birthday, "php:Y-m-d");
+            }
+            return true;
+        } else {
+            return false;
+        }
+    }
 
+    /**
+     * @return bool
+     */
+    public function beforeDelete()
+    {
+        $this->birthday=Yii::$app->formatter->asDate($this->birthday, "php:Y-m-d");
+        return parent::beforeDelete();
     }
 }

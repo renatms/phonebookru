@@ -71,10 +71,12 @@ class AbonentController extends Controller
         $phone = new Phone();
         $group = Group::find()->all();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save(false)) {
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
             $phone->load(Yii::$app->request->post());
-            $phone->abonent_id = $model->id;
-            $phone->save(false);
+            if(!empty($phone->number)){
+                $phone->abonent_id = $model->id;
+                $phone->save();
+            }
 
             return $this->redirect(['view', 'id' => $model->id]);
         }
@@ -101,14 +103,14 @@ class AbonentController extends Controller
         $newphone->load(Yii::$app->request->post());
         if ($submit == 'add' && $newphone->number!="") {
             $newphone->abonent_id = $model->id;
-            $newphone->save(false);
+            $newphone->save();
             return $this->refresh();
         }
 
-        if ($model->load(Yii::$app->request->post()) && $model->save(false)) {
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
             Model::loadMultiple($phone, Yii::$app->request->post());
             foreach ($phone as $setting) {
-                $setting->save(false);
+                $setting->save();
             }
 
             return $this->redirect(['view', 'id' => $model->id]);
@@ -129,7 +131,6 @@ class AbonentController extends Controller
     public function actionDelete($id)
     {
         $model=$this->findModel($id);
-        $model->birthday=Yii::$app->formatter->asDatetime($model->birthday, "php:Y.m.d");
         $model->delete();
         return $this->redirect(['index']);
     }

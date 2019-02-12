@@ -35,9 +35,8 @@ class Phone extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['abonent_id', 'group_id', 'created_at', 'updated_at'], 'required'],
-            [['abonent_id', 'group_id', 'is_deleted'], 'integer'],
-            [['created_at', 'updated_at'], 'safe'],
+            [['abonent_id', 'group_id'], 'integer'],
+            [['number'], 'safe'],
             [['number'], 'string', 'max' => 20],
             [['abonent_id'], 'exist', 'skipOnError' => true, 'targetClass' => Abonent::className(), 'targetAttribute' => ['abonent_id' => 'id']],
             [['group_id'], 'exist', 'skipOnError' => true, 'targetClass' => Group::className(), 'targetAttribute' => ['group_id' => 'id']],

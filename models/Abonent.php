@@ -37,9 +37,7 @@ class Abonent extends ActiveRecord
     {
         return [
             [['first_name', 'second_name', 'middle_name', 'birthday'], 'required'],
-            [['created_at', 'updated_at', 'is_deleted'], 'safe'],
             [['first_name', 'second_name', 'middle_name'], 'string', 'max' => 50],
-            [['is_deleted'], 'integer', 'max' => 1],
             [['birthday'], 'date','format'=>'php:d.m.Y'],
         ];
     }

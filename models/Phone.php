@@ -93,4 +93,12 @@ class Phone extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Group::className(), ['id' => 'group_id']);
     }
+
+    /**
+     * @return PhoneQuery
+     */
+    public static function find()
+    {
+        return new PhoneQuery(get_called_class());
+    }
 }

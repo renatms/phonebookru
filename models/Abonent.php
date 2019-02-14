@@ -127,4 +127,12 @@ class Abonent extends ActiveRecord
         $this->birthday=Yii::$app->formatter->asDate($this->birthday, "php:Y-m-d");
         return parent::beforeDelete();
     }
+
+    /**
+     * @return AbonentQuery
+     */
+    public static function find()
+    {
+        return new AbonentQuery(get_called_class());
+    }
 }

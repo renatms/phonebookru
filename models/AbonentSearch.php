@@ -40,7 +40,7 @@ class AbonentSearch extends Abonent
      */
     public function search($params)
     {
-        $query = Abonent::find()->where(['is_deleted'=>0]);
+        $query = Abonent::find()->notDeleted();
 
         // add conditions that should always apply here
 

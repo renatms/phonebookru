@@ -166,11 +166,7 @@ class AbonentController extends Controller
      */
     protected function findPhone($id)
     {
-        if (($phone = Phone::find()
-                //->andWhere(['abonent_id'=>$id])
-                //->andWhere(['is_deleted' => 0])
-                ->notDeleted($id)->all()
-                ) !== null) {
+        if (($phone = Phone::find()->notDeleted($id)->all()) !== null) {
             return $phone;
         }
 

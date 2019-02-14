@@ -36,7 +36,6 @@ class Phone extends \yii\db\ActiveRecord
     {
         return [
             [['abonent_id', 'group_id'], 'integer'],
-            [['number'], 'safe'],
             [['number'], 'string', 'max' => 20],
             [['abonent_id'], 'exist', 'skipOnError' => true, 'targetClass' => Abonent::className(), 'targetAttribute' => ['abonent_id' => 'id']],
             [['group_id'], 'exist', 'skipOnError' => true, 'targetClass' => Group::className(), 'targetAttribute' => ['group_id' => 'id']],

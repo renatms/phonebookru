@@ -5,7 +5,6 @@ namespace app\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\Abonent;
 
 /**
  * AbonentSearch represents the model behind the search form of `app\models\Abonent`.

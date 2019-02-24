@@ -14,13 +14,21 @@ use yii\db\ActiveQuery;
 class PhoneQuery extends ActiveQuery
 {
     /**
+     * @return $this
+     */
+    public function notDeleted()
+    {
+        return $this
+            ->andWhere(['is_deleted' => false]);
+    }
+
+    /**
      * @param $id
      * @return $this
      */
-    public function notDeleted($id)
+    public function forAbonent($id)
     {
         return $this
-            ->andWhere(['abonent_id'=>$id])
-            ->andWhere(['is_deleted'=>0]);
+            ->andWhere(['abonent_id' => $id]);
     }
 }

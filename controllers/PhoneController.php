@@ -3,6 +3,7 @@
 namespace app\controllers;
 use Yii;
 use app\models\Phone;
+use yii\web\NotFoundHttpException;
 
 class PhoneController extends \yii\web\Controller
 {

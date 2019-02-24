@@ -38,7 +38,8 @@ class Abonent extends ActiveRecord
         return [
             [['first_name', 'second_name', 'middle_name', 'birthday'], 'required'],
             [['first_name', 'second_name', 'middle_name'], 'string', 'max' => 50],
-            [['birthday'], 'date','format'=>'php:d.m.Y'],
+            [['birthday'], 'date', 'format' => 'php:Y-m-d'],
+            [['FormattedBirthday'], 'date', 'format' => 'php:d.m.Y']
         ];
     }
 
@@ -53,6 +54,7 @@ class Abonent extends ActiveRecord
             'second_name' => 'Фамилия',
             'middle_name' => 'Отчество',
             'birthday' => 'День рождениe',
+            'FormattedBirthday' => 'День рождениe',
             'created_at' => 'Создан',
             'updated_at' => 'Обновлен',
             'is_deleted' => 'Удален',
@@ -83,20 +85,33 @@ class Abonent extends ActiveRecord
             [
                 'class' => 'yii\behaviors\TimestampBehavior',
                 'value' => function () {
-                    $date = new \yii\db\Expression('NOW()');
-                    return $date;
+                    return new \yii\db\Expression('NOW()');
                 }
-            ],
+            ]
         ];
     }
 
     /**
-     *
+     * @return false|string
      */
-    public function afterFind()
+    public function getFormattedBirthday()
     {
-        $this->birthday = Yii::$app->formatter->asDate($this->birthday, "php:d.m.Y");
-        parent::afterFind();
+        if (!empty($this->birthday)) {
+            return date('d.m.Y', strtotime($this->birthday));
+        }
+        return false;
+    }
+
+    /**
+     * @param $date
+     */
+    public function setFormattedBirthday($date)
+    {
+        if (empty($date)) {
+            $this->birthday = null;
+        } else {
+            $this->birthday = date('Y-m-d', strtotime($date));
+        }
     }
 
     /**
@@ -108,24 +123,13 @@ class Abonent extends ActiveRecord
         if (parent::beforeSave($insert)) {
             if ($insert) {
                 Yii::$app->session->setFlash('success', 'Запись добавлена!');
-                $this->birthday = Yii::$app->formatter->asDate($this->birthday, "php:Y-m-d");
             } else {
                 Yii::$app->session->setFlash('success', 'Запись обновлена!');
-                $this->birthday = Yii::$app->formatter->asDate($this->birthday, "php:Y-m-d");
             }
             return true;
         } else {
             return false;
         }
-    }
-
-    /**
-     * @return bool
-     */
-    public function beforeDelete()
-    {
-        $this->birthday=Yii::$app->formatter->asDate($this->birthday, "php:Y-m-d");
-        return parent::beforeDelete();
     }
 
     /**

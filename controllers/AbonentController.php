@@ -56,7 +56,7 @@ class AbonentController extends Controller
     public function actionView($id)
     {
         return $this->render('view', [
-            'model' => $this->findModel($id), 'phone' => $this->findPhone($id)
+            'model' => $this->findModel($id), 'phone' => $this->findPhones($id)
         ]);
     }
 
@@ -73,7 +73,7 @@ class AbonentController extends Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             $phone->load(Yii::$app->request->post());
-            if(!empty($phone->number)){
+            if (!empty($phone->number)) {
                 $phone->abonent_id = $model->id;
                 $phone->save();
             }
@@ -81,7 +81,7 @@ class AbonentController extends Controller
             return $this->redirect(['view', 'id' => $model->id]);
         }
         return $this->render('create', [
-            'model' => $model, 'phone'=>$phone, 'group' => $group
+            'model' => $model, 'phone' => $phone, 'group' => $group
         ]);
     }
 
@@ -95,16 +95,21 @@ class AbonentController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        $phone = $this->findPhone($id);
-        $newphone = new Phone();
+        $phone = $this->findPhones($id);
+        $newPhone = new Phone();
         $group = Group::find()->all();
 
-        $submit=Yii::$app->request->post('submit1');
-        $newphone->load(Yii::$app->request->post());
-        if ($submit == 'add' && $newphone->number!="") {
-            $newphone->abonent_id = $model->id;
-            $newphone->save();
-            return $this->refresh();
+        $submit = Yii::$app->request->post('submit1');
+        $newPhone->load(Yii::$app->request->post());
+        if ($submit == 'add') {
+            if (!empty($newPhone->number)) {
+                $newPhone->abonent_id = $model->id;
+                $newPhone->save();
+                return $this->refresh();
+            } else {
+                Yii::$app->session->setFlash('error', 'Укажите номер!');
+                return $this->refresh();
+            }
         }
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -117,7 +122,7 @@ class AbonentController extends Controller
         }
 
         return $this->render('update', [
-            'model' => $model, 'phone'=>$phone, 'group' => $group, 'newphone' => $newphone
+            'model' => $model, 'phone' => $phone, 'group' => $group, 'newPhone' => $newPhone
         ]);
     }
 
@@ -130,7 +135,7 @@ class AbonentController extends Controller
      */
     public function actionDelete($id)
     {
-        $model=$this->findModel($id);
+        $model = $this->findModel($id);
         $model->delete();
         return $this->redirect(['index']);
     }
@@ -164,9 +169,9 @@ class AbonentController extends Controller
      * @return array|\yii\db\ActiveRecord[]
      * @throws NotFoundHttpException
      */
-    protected function findPhone($id)
+    protected function findPhones($id)
     {
-        if (($phone = Phone::find()->notDeleted($id)->all()) !== null) {
+        if (($phone = Phone::find()->notDeleted()->forAbonent($id)->all()) !== null) {
             return $phone;
         }
 

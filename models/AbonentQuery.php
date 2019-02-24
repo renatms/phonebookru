@@ -18,6 +18,6 @@ class AbonentQuery extends ActiveQuery
     public function notDeleted()
     {
         return $this
-            ->where(['is_deleted'=>0]);
+            ->where(['is_deleted' => false]);
     }
 }

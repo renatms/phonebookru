@@ -8,8 +8,8 @@ use yii\widgets\DetailView;
 /* @var $phone app\models\Phone[] */
 /* @var $group app\models\Group[] */
 
-$this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Абонент', 'url' => ['index']];
+$this->title = $model->first_name . ' ' . $model->second_name;
+$this->params['breadcrumbs'][] = ['label' => 'Абоненты', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="abonent-view">
@@ -48,28 +48,28 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]) ?>
     <?php foreach ($phone as $index => $ph): ?>
-    <?= DetailView::widget([
-        'model' => $phone[$index],
-        'attributes' => [
-            'number',
-            [
-                'attribute' => 'group_id',
-                'value' => function($model){
-                    $group = \app\models\Group::findOne($model->group_id);
-                    return $group->type;
-                },
+        <?= DetailView::widget([
+            'model' => $phone[$index],
+            'attributes' => [
+                'number',
+                [
+                    'attribute' => 'group_id',
+                    'value' => function ($model) {
+                        $group = \app\models\Group::findOne($model->group_id);
+                        return $group->type;
+                    },
+                ],
+                [
+                    'attribute' => 'created_at',
+                    'format' => ['date', 'php:d.m.Y H:s'],
+                ],
+                [
+                    'attribute' => 'updated_at',
+                    'format' => ['date', 'php:d.m.Y H:s'],
+                ],
             ],
-            [
-                'attribute' => 'created_at',
-                'format' => ['date', 'php:d.m.Y H:s'],
-            ],
-            [
-                'attribute' => 'updated_at',
-                'format' => ['date', 'php:d.m.Y H:s'],
-            ],
-        ],
-    ]) ?>
+        ]) ?>
 
-    <?php endforeach;?>
+    <?php endforeach; ?>
 
 </div>

@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use phpDocumentor\Reflection\Types\Null_;
 use Yii;
 use yii\base\Model;
 use app\models\Abonent;
@@ -67,21 +68,29 @@ class AbonentController extends Controller
      */
     public function actionCreate()
     {
+        $update = false;
         $model = new Abonent();
         $phone = new Phone();
-        $group = Group::find()->all();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            $phone->load(Yii::$app->request->post());
-            if (!empty($phone->number)) {
-                $phone->abonent_id = $model->id;
-                $phone->save();
+
+            $post = Yii::$app->request->post();
+            foreach ($post[number] as $key => $num) {
+                if (!empty($num)) {
+
+                    $phone = new Phone();
+                    $phone->abonent_id = $model->id;
+                    $phone->number = $num;
+                    $phone->group_id = $post[type][$key];
+                    $phone->save();
+                }
             }
 
             return $this->redirect(['view', 'id' => $model->id]);
         }
+
         return $this->render('create', [
-            'model' => $model, 'phone' => $phone, 'group' => $group
+            'model' => $model, 'phone' => $phone, 'update' => $update
         ]);
     }
 
@@ -94,23 +103,10 @@ class AbonentController extends Controller
      */
     public function actionUpdate($id)
     {
+        $update = true;
         $model = $this->findModel($id);
         $phone = $this->findPhones($id);
-        $newPhone = new Phone();
         $group = Group::find()->all();
-
-        $submit = Yii::$app->request->post('submit1');
-        $newPhone->load(Yii::$app->request->post());
-        if ($submit == 'add') {
-            if (!empty($newPhone->number)) {
-                $newPhone->abonent_id = $model->id;
-                $newPhone->save();
-                return $this->refresh();
-            } else {
-                Yii::$app->session->setFlash('error', 'Укажите номер!');
-                return $this->refresh();
-            }
-        }
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             Model::loadMultiple($phone, Yii::$app->request->post());
@@ -118,11 +114,24 @@ class AbonentController extends Controller
                 $setting->save();
             }
 
+            $post = Yii::$app->request->post();
+
+            foreach ($post[number] as $key => $num) {
+                if (!empty($num)) {
+
+                    $phone = new Phone();
+                    $phone->abonent_id = $model->id;
+                    $phone->number = $num;
+                    $phone->group_id = $post[type][$key];
+                    $phone->save();
+                }
+            }
+
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('update', [
-            'model' => $model, 'phone' => $phone, 'group' => $group, 'newPhone' => $newPhone
+            'model' => $model, 'phone' => $phone, 'group' => $group, 'update' => $update
         ]);
     }
 
@@ -145,7 +154,11 @@ class AbonentController extends Controller
      */
     public function actionAbout()
     {
-        return $this->render('about');
+        $model = new Abonent();
+
+        return $this->render('about', [
+            'model' => $model
+        ]);
     }
 
     /**

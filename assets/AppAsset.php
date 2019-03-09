@@ -23,6 +23,10 @@ class AppAsset extends AssetBundle
         'css/site.css',
     ];
     public $js = [
+        'js/main.js',
+        'js/main-index.js',
+        'js/jquery.maskedinput.js',
+        'js/jquery.maskedinput.min.js',
     ];
     public $depends = [
         'yii\web\YiiAsset',

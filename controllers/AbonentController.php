@@ -2,13 +2,14 @@
 
 namespace app\controllers;
 
-use phpDocumentor\Reflection\Types\Null_;
 use Yii;
 use yii\base\Model;
 use app\models\Abonent;
 use app\models\Phone;
 use app\models\Group;
 use app\models\AbonentSearch;
+use app\models\SignupForm;
+use app\models\LoginForm;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -68,6 +69,11 @@ class AbonentController extends Controller
      */
     public function actionCreate()
     {
+        if (Empty(Yii::$app->user->identity)) {
+            Yii::$app->session->setFlash('error', 'Пожалуйста, зарегистрируйтесь или авторизуйтесь');
+            return $this->redirect(['index']);
+        }
+
         $update = false;
         $model = new Abonent();
         $phone = new Phone();
@@ -159,6 +165,58 @@ class AbonentController extends Controller
         return $this->render('about', [
             'model' => $model
         ]);
+    }
+
+    /**
+     * @return string|\yii\web\Response
+     */
+    public function actionSignup()
+    {
+        $model = new SignupForm();
+
+        if ($model->load(Yii::$app->request->post())) {
+            if ($user = $model->signup()) {
+                if (Yii::$app->getUser()->login($user)) {
+                    return $this->goHome();
+                }
+            }
+        }
+
+        return $this->render('signup', [
+            'model' => $model,
+        ]);
+    }
+
+
+    /**
+     * @return string|\yii\web\Response
+     */
+    public function actionLogin()
+    {
+        if (!Yii::$app->user->isGuest) {
+            return $this->goHome();
+        }
+
+        $model = new LoginForm();
+        if ($model->load(Yii::$app->request->post()) && $model->login()) {
+            return $this->goBack();
+        }
+
+        $model->password = '';
+        return $this->render('login', [
+            'model' => $model,
+        ]);
+    }
+
+
+    /**
+     * @return \yii\web\Response
+     */
+    public function actionLogout()
+    {
+        Yii::$app->user->logout();
+
+        return $this->goHome();
     }
 
     /**

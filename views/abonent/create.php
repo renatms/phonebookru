@@ -8,8 +8,8 @@ use yii\helpers\Html;
 /* @var $phone app\models\Phone */
 /* @var $update */
 
-$this->title = 'Новый абонент';
-$this->params['breadcrumbs'][] = ['label' => 'Абоненты', 'url' => ['index']];
+$this->title = 'Новый контакт';
+$this->params['breadcrumbs'][] = ['label' => 'Контакты', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="abonent-create">

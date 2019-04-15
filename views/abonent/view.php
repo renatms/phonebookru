@@ -9,7 +9,7 @@ use yii\widgets\DetailView;
 /* @var $group app\models\Group[] */
 
 $this->title = $model->first_name . ' ' . $model->second_name;
-$this->params['breadcrumbs'][] = ['label' => 'Абоненты', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Контакты', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="abonent-view">

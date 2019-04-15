@@ -17,6 +17,7 @@ use yii2tech\ar\softdelete\SoftDeleteBehavior;
  * @property string $created_at
  * @property string $updated_at
  * @property int $is_deleted
+ * @property int $user_id
  *
  * @property Phone[] $phones
  */
@@ -39,7 +40,8 @@ class Abonent extends ActiveRecord
             [['first_name', 'second_name', 'middle_name', 'birthday'], 'required'],
             [['first_name', 'second_name', 'middle_name'], 'string', 'max' => 50],
             [['birthday'], 'date', 'format' => 'php:Y-m-d'],
-            [['FormattedBirthday'], 'date', 'format' => 'php:d.m.Y']
+            [['FormattedBirthday'], 'date', 'format' => 'php:d.m.Y'],
+            [['user_id'], 'default', 'value' => Yii::$app->user->identity[id]]
         ];
     }
 
@@ -58,6 +60,7 @@ class Abonent extends ActiveRecord
             'created_at' => 'Создан',
             'updated_at' => 'Обновлен',
             'is_deleted' => 'Удален',
+            'user_id' => 'User_id'
         ];
     }
 

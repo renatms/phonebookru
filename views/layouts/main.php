@@ -35,12 +35,28 @@ AppAsset::register($this);
             'class' => 'navbar-inverse navbar-fixed-top',
         ],
     ]);
+    $menuItems = [
+        ['label' => 'Home', 'url' => ['/abonent/index']],
+        ['label' => 'About', 'url' => ['/abonent/about']],
+    ];
+
+    if (Yii::$app->user->isGuest) {
+        $menuItems[] = ['label' => 'Signup', 'url' => ['/abonent/signup']];
+        $menuItems[] = ['label' => 'Login', 'url' => ['/abonent/login']];
+    } else {
+        $menuItems[] = '<li>'
+            . Html::beginForm(['/abonent/logout'], 'post')
+            . Html::submitButton(
+                'Logout (' . Yii::$app->user->identity->username . ')',
+                ['class' => 'btn btn-link logout']
+            )
+            . Html::endForm()
+            . '</li>';
+    }
+
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],
-        'items' => [
-            ['label' => 'Home', 'url' => ['/abonent/index']],
-            ['label' => 'About', 'url' => ['/abonent/about']],
-        ],
+        'items' => $menuItems,
     ]);
     NavBar::end();
     ?>

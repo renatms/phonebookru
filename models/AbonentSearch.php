@@ -40,14 +40,14 @@ class AbonentSearch extends Abonent
      */
     public function search($params)
     {
-        $query = Abonent::find()->notDeleted();
+        $query = Abonent::find()->notDeleted()->forAuthorized();
 
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
-        $dataProvider->pagination->pageSize=10;
+        $dataProvider->pagination->pageSize = 10;
 
         $this->load($params);
 

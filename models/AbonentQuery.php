@@ -8,6 +8,7 @@
 
 namespace app\models;
 
+use Yii;
 use yii\db\ActiveQuery;
 
 class AbonentQuery extends ActiveQuery
@@ -18,6 +19,20 @@ class AbonentQuery extends ActiveQuery
     public function notDeleted()
     {
         return $this
-            ->where(['is_deleted' => false]);
+            ->andWhere(['is_deleted' => false]);
+    }
+
+    /**
+     * @return $this
+     */
+    public function forAuthorized()
+    {
+        $getId = Yii::$app->user->identity[id];
+        if (empty($getId)) {
+            $getId = 0;
+        }
+
+        return $this
+            ->andWhere(['user_id' => $getId]);
     }
 }

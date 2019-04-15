@@ -8,8 +8,8 @@ use yii\helpers\Html;
 /* @var $group app\models\Group[] */
 /* @var $update */
 
-$this->title = 'Обновить данные абонента:';
-$this->params['breadcrumbs'][] = ['label' => 'Абоненты', 'url' => ['index']];
+$this->title = 'Обновить данные контакта:';
+$this->params['breadcrumbs'][] = ['label' => 'Контакты', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->first_name . ' ' . $model->second_name, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Обновить';
 ?>

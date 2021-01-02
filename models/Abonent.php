@@ -87,8 +87,12 @@ class Abonent extends ActiveRecord
             ],
             [
                 'class' => 'yii\behaviors\TimestampBehavior',
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => ['created_at', 'updated_at'],
+                    ActiveRecord::EVENT_BEFORE_UPDATE => 'updated_at',
+                ],
                 'value' => function () {
-                    return new \yii\db\Expression('NOW()');
+                    return time();
                 }
             ]
         ];

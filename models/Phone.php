@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\db\ActiveRecord;
 use yii2tech\ar\softdelete\SoftDeleteBehavior;
 
 /**
@@ -70,9 +71,12 @@ class Phone extends \yii\db\ActiveRecord
             ],
             [
                 'class' => 'yii\behaviors\TimestampBehavior',
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => ['created_at', 'updated_at'],
+                    ActiveRecord::EVENT_BEFORE_UPDATE => 'updated_at',
+                ],
                 'value' => function () {
-                    $date = new \yii\db\Expression('NOW()');
-                    return $date;
+                    return time();
                 }
             ],
         ];

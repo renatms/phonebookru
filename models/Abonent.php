@@ -92,7 +92,7 @@ class Abonent extends ActiveRecord
                     ActiveRecord::EVENT_BEFORE_UPDATE => 'updated_at',
                 ],
                 'value' => function () {
-                    return time();
+                    return new \yii\db\Expression('NOW()');
                 }
             ]
         ];

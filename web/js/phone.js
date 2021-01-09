@@ -17,6 +17,7 @@ function deleteField(a) {
     // Возвращаем false, чтобы не было перехода по сслыке
     return false;
 }
+
 function addField() {
 
     // Проверяем, не достигло ли число полей максимума
@@ -38,8 +39,7 @@ function addField() {
         "<option value=\"3\">Сотовый</option>" +
         "<option value=\"4\">Главный</option>" +
         "</select></td>" +
-        "<td><br /><a class=\"glyphicon glyphicon-trash\" onclick=\"return deleteField(this)\" href=\"#\"></a> " +
-        "<a class=\"glyphicon glyphicon-plus\" onclick=\"return addField()\" href=\"#\"></a></td>";
+        "<td><br /><a class=\"glyphicon glyphicon-trash\" onclick=\"return deleteField(this)\" href=\"#\"></a></td>";
 
     // Добавляем новый узел в конец списка полей
     document.getElementById("parentId").appendChild(tr);

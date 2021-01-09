@@ -11,7 +11,7 @@ use kartik\date\DatePicker;
 /* @var $phone app\models\Phone */
 /* @var $group app\models\Group[] */
 /* @var $form yii\widgets\ActiveForm */
-/* @var $update */
+/* @var $update bool */
 
 \app\assets\PhoneAsset::register($this);
 ?>
@@ -66,39 +66,43 @@ use kartik\date\DatePicker;
                     </td>
                 </tr>
             <?php endforeach; ?>
+
+
+        <?php else: ?>
+            <tr>
+                <td>
+
+                    <input class="form-control" id="mask" name="number[0]" type="text"/>
+                </td>
+                <td>
+
+                    <select class="form-control" id="typephone" size="1" name="type[0]">
+                        "
+                        <option value="1">Домашний</option>
+                        " +
+                        "
+                        <option value="2">Рабочий</option>
+                        " +
+                        "
+                        <option value="3">Сотовый</option>
+                        " +
+                        "
+                        <option value="4">Главный</option>
+                        " +
+                    </select>
+                </td>
+                <td>
+                    <a class="glyphicon glyphicon-trash" onclick="return deleteField(this)" href="#"></a>
+                </td>
+            </tr>
+
         <?php endif; ?>
-
-
-        <tr>
-            <td>
-
-                <input class="form-control" id="mask" name="number[0]" type="text"/>
-            </td>
-            <td>
-
-                <select class="form-control" id="typephone" size="1" name="type[0]">
-                    "
-                    <option value="1">Домашний</option>
-                    " +
-                    "
-                    <option value="2">Рабочий</option>
-                    " +
-                    "
-                    <option value="3">Сотовый</option>
-                    " +
-                    "
-                    <option value="4">Главный</option>
-                    " +
-                </select>
-            </td>
-            <td>
-                <a class="glyphicon glyphicon-trash" onclick="return deleteField(this)" href="#"></a>
-                <a class="glyphicon glyphicon-plus" onclick="return addField()" href="#"></a>
-            </td>
-        </tr>
 
     </table>
 
+    <a class="glyphicon glyphicon-plus" onclick="return addField()" href="#">Добавить номер</a>
+    <br/>
+    <br/>
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
     </div>

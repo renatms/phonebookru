@@ -6,7 +6,7 @@ use yii\helpers\Html;
 /* @var $model app\models\Abonent */
 /* @var $phone app\models\Phone[] */
 /* @var $group app\models\Group[] */
-/* @var $update */
+/* @var $update bool */
 
 $this->title = 'Обновить данные контакта:';
 $this->params['breadcrumbs'][] = ['label' => 'Контакты', 'url' => ['index']];

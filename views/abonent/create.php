@@ -6,7 +6,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\Abonent */
 /* @var $phone app\models\Phone */
-/* @var $update */
+/* @var $update bool */
 
 $this->title = 'Новый контакт';
 $this->params['breadcrumbs'][] = ['label' => 'Контакты', 'url' => ['index']];

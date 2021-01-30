@@ -122,13 +122,13 @@ class AbonentController extends Controller
 
             $post = Yii::$app->request->post();
 
-            foreach ($post[number] as $key => $num) {
+            foreach ($post['number'] as $key => $num) {
                 if (!empty($num)) {
 
                     $phone = new Phone();
                     $phone->abonent_id = $model->id;
                     $phone->number = $num;
-                    $phone->group_id = $post[type][$key];
+                    $phone->group_id = $post['type'][$key];
                     $phone->save();
                 }
             }

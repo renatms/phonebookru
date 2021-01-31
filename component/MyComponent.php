@@ -4,7 +4,9 @@
 namespace app\component;
 
 
-class MyComponent extends \yii\base\Component
+use yii\web\Controller;
+
+class MyComponent extends Controller
 {
     static function dd($value)
     {

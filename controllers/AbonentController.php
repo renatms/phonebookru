@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\component\MyComponent;
 use Yii;
 use yii\base\Model;
 use app\models\Abonent;
@@ -17,7 +18,7 @@ use yii\filters\VerbFilter;
 /**
  * AbonentController implements the CRUD actions for Abonent model.
  */
-class AbonentController extends Controller
+class AbonentController extends MyComponent
 {
     /**
      * @inheritdoc

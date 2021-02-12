@@ -40,7 +40,7 @@ class Abonent extends ActiveRecord
             [['first_name', 'second_name', 'middle_name', 'birthday'], 'required'],
             [['first_name', 'second_name', 'middle_name'], 'string', 'max' => 50],
             [['birthday'], 'date', 'format' => 'php:Y-m-d'],
-            [['FormattedBirthday'], 'date', 'format' => 'php:d.m.Y'],
+            [['formattedBirthday'], 'date', 'format' => 'php:d.m.Y'],
             [['user_id'], 'default', 'value' => Yii::$app->user->identity[id]]
         ];
     }
@@ -56,7 +56,7 @@ class Abonent extends ActiveRecord
             'second_name' => 'Фамилия',
             'middle_name' => 'Отчество',
             'birthday' => 'День рождениe',
-            'FormattedBirthday' => 'День рождениe',
+            'formattedBirthday' => 'День рождениe',
             'created_at' => 'Создан',
             'updated_at' => 'Обновлен',
             'is_deleted' => 'Удален',

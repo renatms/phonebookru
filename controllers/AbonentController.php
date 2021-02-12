@@ -2,7 +2,6 @@
 
 namespace app\controllers;
 
-use app\component\MyComponent;
 use Yii;
 use yii\base\Model;
 use app\models\Abonent;
@@ -18,7 +17,7 @@ use yii\filters\VerbFilter;
 /**
  * AbonentController implements the CRUD actions for Abonent model.
  */
-class AbonentController extends MyComponent
+class AbonentController extends Controller
 {
     /**
      * @inheritdoc
@@ -79,9 +78,9 @@ class AbonentController extends MyComponent
         $model = new Abonent();
         $phone = new Phone();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(post()) && $model->save()) {
 
-            $post = Yii::$app->request->post();
+            $post = post();
             foreach ($post['number'] as $key => $num) {
                 if (!empty($num)) {
 
@@ -115,13 +114,13 @@ class AbonentController extends MyComponent
         $phone = $this->findPhones($id);
         $group = Group::find()->all();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            Model::loadMultiple($phone, Yii::$app->request->post());
+        if ($model->load(post()) && $model->save()) {
+            Model::loadMultiple($phone, post());
             foreach ($phone as $setting) {
                 $setting->save();
             }
 
-            $post = Yii::$app->request->post();
+            $post = post();
 
             foreach ($post['number'] as $key => $num) {
                 if (!empty($num)) {
@@ -175,7 +174,7 @@ class AbonentController extends MyComponent
     {
         $model = new SignupForm();
 
-        if ($model->load(Yii::$app->request->post())) {
+        if ($model->load(post())) {
             if ($user = $model->signup()) {
                 if (Yii::$app->getUser()->login($user)) {
                     return $this->goHome();
@@ -199,7 +198,7 @@ class AbonentController extends MyComponent
         }
 
         $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
+        if ($model->load(post()) && $model->login()) {
             return $this->goBack();
         }
 

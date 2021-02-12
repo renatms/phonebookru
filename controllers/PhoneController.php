@@ -1,12 +1,13 @@
 <?php
 
 namespace app\controllers;
-use app\component\MyComponent;
+
 use Yii;
 use app\models\Phone;
+use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
-class PhoneController extends MyComponent
+class PhoneController extends Controller
 {
     public function actionIndex()
     {

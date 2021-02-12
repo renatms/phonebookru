@@ -26,7 +26,7 @@ use kartik\date\DatePicker;
 
     <?= $form->field($model, 'middle_name') ?>
 
-    <?= $form->field($model, 'FormattedBirthday')->widget(DatePicker::classname(), [
+    <?= $form->field($model, 'formattedBirthday')->widget(DatePicker::classname(), [
         'options' => ['placeholder' => 'Дата рождения'],
         'pluginOptions' => [
             'format' => 'dd.mm.yyyy',

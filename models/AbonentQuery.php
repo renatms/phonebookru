@@ -27,7 +27,7 @@ class AbonentQuery extends ActiveQuery
      */
     public function forAuthorized()
     {
-        $getId = Yii::$app->user->identity[id];
+        $getId = Yii::$app->user->identity['id'];
         if (empty($getId)) {
             $getId = 0;
         }

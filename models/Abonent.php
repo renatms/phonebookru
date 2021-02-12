@@ -41,7 +41,7 @@ class Abonent extends ActiveRecord
             [['first_name', 'second_name', 'middle_name'], 'string', 'max' => 50],
             [['birthday'], 'date', 'format' => 'php:Y-m-d'],
             [['formattedBirthday'], 'date', 'format' => 'php:d.m.Y'],
-            [['user_id'], 'default', 'value' => Yii::$app->user->identity->getId()]
+            [['user_id'], 'default', 'value' => user()->getId()]
         ];
     }
 

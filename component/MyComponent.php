@@ -24,8 +24,6 @@ function get($name = null, $defaultValue = null)
 
 function user()
 {
-
-    /** @var \app\modules\tenant\models\User $user */
     $user = app()->getUser()->identity;
 
     return $user;

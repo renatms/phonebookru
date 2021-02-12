@@ -69,7 +69,7 @@ class AbonentController extends Controller
      */
     public function actionCreate()
     {
-        if (Empty(Yii::$app->user->identity)) {
+        if (Empty(user())) {
             Yii::$app->session->setFlash('error', 'Пожалуйста, зарегистрируйтесь или авторизуйтесь');
             return $this->redirect(['index']);
         }

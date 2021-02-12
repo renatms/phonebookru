@@ -77,10 +77,10 @@ class AbonentController extends Controller
         $update = false;
         $model = new Abonent();
         $phone = new Phone();
+        $post = post();
 
-        if ($model->load(post()) && $model->save()) {
+        if ($model->load($post) && $model->save()) {
 
-            $post = post();
             foreach ($post['number'] as $key => $num) {
                 if (!empty($num)) {
 
@@ -113,14 +113,13 @@ class AbonentController extends Controller
         $model = $this->findModel($id);
         $phone = $this->findPhones($id);
         $group = Group::find()->all();
+        $post = post();
 
-        if ($model->load(post()) && $model->save()) {
-            Model::loadMultiple($phone, post());
+        if ($model->load($post) && $model->save()) {
+            Model::loadMultiple($phone, $post);
             foreach ($phone as $setting) {
                 $setting->save();
             }
-
-            $post = post();
 
             foreach ($post['number'] as $key => $num) {
                 if (!empty($num)) {

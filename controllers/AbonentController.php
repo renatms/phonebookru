@@ -81,16 +81,7 @@ class AbonentController extends Controller
 
         if ($model->load($post) && $model->save()) {
 
-            foreach ($post['number'] as $key => $num) {
-                if (!empty($num)) {
-
-                    $phone = new Phone();
-                    $phone->abonent_id = $model->id;
-                    $phone->number = $num;
-                    $phone->group_id = $post['type'][$key];
-                    $phone->save();
-                }
-            }
+            $this->savePhone($model, $post);
 
             return $this->redirect(['view', 'id' => $model->id]);
         }
@@ -121,16 +112,7 @@ class AbonentController extends Controller
                 $setting->save();
             }
 
-            foreach ($post['number'] as $key => $num) {
-                if (!empty($num)) {
-
-                    $phone = new Phone();
-                    $phone->abonent_id = $model->id;
-                    $phone->number = $num;
-                    $phone->group_id = $post['type'][$key];
-                    $phone->save();
-                }
-            }
+            $this->savePhone($model, $post);
 
             return $this->redirect(['view', 'id' => $model->id]);
         }
@@ -246,5 +228,19 @@ class AbonentController extends Controller
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    protected function savePhone($model, $post)
+    {
+        foreach ($post['number'] as $key => $num) {
+            if (!empty($num)) {
+
+                $phone = new Phone();
+                $phone->abonent_id = $model->id;
+                $phone->number = $num;
+                $phone->group_id = $post['type'][$key];
+                $phone->save();
+            }
+        }
     }
 }

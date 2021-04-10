@@ -7,8 +7,7 @@ use kartik\date\DatePicker;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Abonent */
-/* @var $phone app\models\Phone[] */
-/* @var $phone app\models\Phone */
+/* @var $phones app\models\Phone[] */
 /* @var $group app\models\Group[] */
 /* @var $form yii\widgets\ActiveForm */
 /* @var $update bool */
@@ -44,7 +43,7 @@ use kartik\date\DatePicker;
         </thead>
         <tbody id="parentId">
         <?php if ($update): ?>
-            <?php foreach ($phone as $index => $ph): ?>
+            <?php foreach ($phones as $index => $ph): ?>
                 <tr>
                     <td>
                         <?= $form->field($ph, "[$index]number")->
@@ -72,11 +71,11 @@ use kartik\date\DatePicker;
             <tr>
                 <td>
 
-                    <input class="form-control" id="mask" name="number[0]" type="text"/>
+                    <input class="form-control" id="mask" name="Phone[0][number]" type="text"/>
                 </td>
                 <td>
 
-                    <select class="form-control" id="typephone" size="1" name="type[0]">
+                    <select class="form-control" id="typephone" size="1" name="Phone[0][group_id]">
                         "
                         <option value="1">Домашний</option>
                         " +

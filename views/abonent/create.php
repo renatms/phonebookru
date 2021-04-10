@@ -5,7 +5,7 @@ use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Abonent */
-/* @var $phone app\models\Phone */
+/* @var $phones app\models\Phone */
 /* @var $update bool */
 
 $this->title = 'Новый контакт';
@@ -16,7 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1><?= Html::encode($this->title) ?></h1>
     <?= $this->render('_form', [
-        'model' => $model, 'phone' => $phone, 'update' => $update
+        'model' => $model, 'phones' => $phones, 'update' => $update
     ]) ?>
 
 </div>

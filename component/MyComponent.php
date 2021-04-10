@@ -22,7 +22,7 @@ function get($name = null, $defaultValue = null)
     return app()->request->get($name, $defaultValue);
 }
 
-function user()
+function user(): ?\yii\web\IdentityInterface
 {
     $user = app()->getUser()->identity;
 

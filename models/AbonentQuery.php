@@ -27,10 +27,7 @@ class AbonentQuery extends ActiveQuery
      */
     public function forAuthorized()
     {
-        $getId = user()->getId();
-        if (empty($getId)) {
-            $getId = 0;
-        }
+        $getId = user() ? user()->getId() : 0;
 
         return $this
             ->andWhere(['user_id' => $getId]);

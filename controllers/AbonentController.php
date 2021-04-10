@@ -2,8 +2,8 @@
 
 namespace app\controllers;
 
+use app\services\PhoneService;
 use Yii;
-use yii\base\Model;
 use app\models\Abonent;
 use app\models\Phone;
 use app\models\Group;
@@ -19,6 +19,7 @@ use yii\filters\VerbFilter;
  */
 class AbonentController extends Controller
 {
+    private $phoneService;
     /**
      * @inheritdoc
      */
@@ -32,6 +33,12 @@ class AbonentController extends Controller
                 ],
             ],
         ];
+    }
+
+    public function __construct($id, $module, PhoneService $phoneService, $config = [])
+    {
+        parent::__construct($id, $module, $config);
+        $this->phoneService = $phoneService;
     }
 
     /**
@@ -76,18 +83,17 @@ class AbonentController extends Controller
 
         $update = false;
         $model = new Abonent();
-        $phone = new Phone();
+        $phones = new Phone();
         $post = post();
 
         if ($model->load($post) && $model->save()) {
-
-            $this->savePhone($model, $post);
+            $this->phoneService->savePhone($model, $post['Phone']);
 
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('create', [
-            'model' => $model, 'phone' => $phone, 'update' => $update
+            'model' => $model, 'phones' => $phones, 'update' => $update
         ]);
     }
 
@@ -102,23 +108,18 @@ class AbonentController extends Controller
     {
         $update = true;
         $model = $this->findModel($id);
-        $phone = $this->findPhones($id);
+        $phones = $this->findPhones($id);
         $group = Group::find()->all();
         $post = post();
 
         if ($model->load($post) && $model->save()) {
-            Model::loadMultiple($phone, $post);
-            foreach ($phone as $setting) {
-                $setting->save();
-            }
-
-            $this->savePhone($model, $post);
+            $this->phoneService->savePhone($model, $post['Phone']);
 
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('update', [
-            'model' => $model, 'phone' => $phone, 'group' => $group, 'update' => $update
+            'model' => $model, 'phones' => $phones, 'group' => $group, 'update' => $update
         ]);
     }
 
@@ -230,17 +231,4 @@ class AbonentController extends Controller
         throw new NotFoundHttpException('The requested page does not exist.');
     }
 
-    protected function savePhone($model, $post)
-    {
-        foreach ($post['number'] as $key => $num) {
-            if (!empty($num)) {
-
-                $phone = new Phone();
-                $phone->abonent_id = $model->id;
-                $phone->number = $num;
-                $phone->group_id = $post['type'][$key];
-                $phone->save();
-            }
-        }
-    }
 }

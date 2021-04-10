@@ -113,7 +113,7 @@ class AbonentController extends Controller
         $post = post();
 
         if ($model->load($post) && $model->save()) {
-            $this->phoneService->savePhone($model, $post['Phone']);
+            $this->phoneService->savePhone($model, $post['Phone'], $phones);
 
             return $this->redirect(['view', 'id' => $model->id]);
         }

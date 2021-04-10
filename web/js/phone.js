@@ -2,7 +2,8 @@ $(function () {
     $("#mask").mask("+7 (999) 999 99 99");
 });
 var countOfFields = 1; // Текущее число полей
-var curFieldNameId = 0; // Уникальное значение для атрибута name
+var curFieldNameId = $('#parentId').children('tr').length; // Уникальное значение для атрибута name
+console.log(curFieldNameId);
 var maxFieldLimit = 10; // Максимальное число возможных полей
 function deleteField(a) {
     if (countOfFields > 1) {

@@ -7,7 +7,7 @@ use app\models\Phone;
 
 class PhoneService
 {
-    public function savePhone($model, $phones, $prePones = null)
+    public function savePhone($model, $phones, $prePones = [])
     {
         foreach ($prePones as $ph) {
             $ph->delete();

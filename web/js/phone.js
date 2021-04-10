@@ -3,8 +3,8 @@ $(function () {
 });
 var countOfFields = 1; // Текущее число полей
 var curFieldNameId = $('#parentId').children('tr').length; // Уникальное значение для атрибута name
-console.log(curFieldNameId);
 var maxFieldLimit = 10; // Максимальное число возможных полей
+
 function deleteField(a) {
     if (countOfFields > 1) {
         // Получаем доступ к тэгу, содержащему поле

@@ -33,8 +33,8 @@ function addField() {
     // Создаем строку таблицы
     var tr = document.createElement("tr");
     // Добавляем HTML-контент с пом. свойства innerHTML
-    tr.innerHTML = "<td><input class=\"form-control mask\" name=\"Phone[" + curFieldNameId + "][number]\" type=\"text\" /></td>" +
-        "<td><select class=\"form-control\" size=\"1\" name=\"Phone[" + curFieldNameId + "][group_id]\" >" +
+    tr.innerHTML = "<td><input class=\"form-control mask\" name=\"NewPhone[" + curFieldNameId + "][number]\" type=\"text\" /></td>" +
+        "<td><select class=\"form-control\" size=\"1\" name=\"NewPhone[" + curFieldNameId + "][group_id]\" >" +
         "<option value=\"1\">Домашний</option>" +
         "<option value=\"2\">Рабочий</option>" +
         "<option value=\"3\">Сотовый</option>" +

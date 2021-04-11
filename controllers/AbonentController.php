@@ -10,6 +10,7 @@ use app\models\Group;
 use app\models\AbonentSearch;
 use app\models\SignupForm;
 use app\models\LoginForm;
+use yii\base\Model;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -87,7 +88,7 @@ class AbonentController extends Controller
         $post = post();
 
         if ($model->load($post) && $model->save()) {
-            $this->phoneService->savePhone($model, $post['Phone']);
+            $this->phoneService->savePhone($model->id, $post);
 
             return $this->redirect(['view', 'id' => $model->id]);
         }
@@ -113,7 +114,8 @@ class AbonentController extends Controller
         $post = post();
 
         if ($model->load($post) && $model->save()) {
-            $this->phoneService->savePhone($model, $post['Phone'], $phones);
+            Model::loadMultiple($phones, $post, 'Phone');
+            $this->phoneService->savePhone($id, $post, $phones);
 
             return $this->redirect(['view', 'id' => $model->id]);
         }

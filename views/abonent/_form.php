@@ -71,11 +71,11 @@ use kartik\date\DatePicker;
             <tr>
                 <td>
 
-                    <input class="form-control" id="mask" name="Phone[0][number]" type="text"/>
+                    <input class="form-control" id="mask" name="NewPhone[0][number]" type="text"/>
                 </td>
                 <td>
 
-                    <select class="form-control" id="typephone" size="1" name="Phone[0][group_id]">
+                    <select class="form-control" id="typephone" size="1" name="NewPhone[0][group_id]">
                         "
                         <option value="1">Домашний</option>
                         " +

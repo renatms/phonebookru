@@ -1,18 +1,35 @@
-$(function () {
-    $("#mask").mask("+7 (999) 999 99 99");
-});
-var countOfFields = 1; // Текущее число полей
+var countOfFields = $('#parentId').children('tr').length; // Текущее число полей
 var curFieldNameId = $('#parentId').children('tr').length; // Уникальное значение для атрибута name
 var maxFieldLimit = 10; // Максимальное число возможных полей
 
-function deleteField(a) {
+$(function () {
+    $("#mask").mask("+7 (999) 999 99 99");
+
+    $('body').on('click', '.glyphicon-trash', function () {
+        let tr = this.parentNode.parentNode.parentNode;
+        deleteField(tr);
+        let phoneId = this.getAttribute('data-phone-id');
+        if (phoneId !== null) {
+            $.ajax({
+                url: '/web/phone/delete',
+                method: 'get',
+                dataType: 'json',
+                data: {id: phoneId},
+                success: function (data) {
+                    alert(data);
+                }
+            });
+            return false;
+        }
+
+        console.log(phoneId);
+        return false;
+    });
+});
+
+function deleteField(tr) {
     if (countOfFields > 1) {
-        // Получаем доступ к тэгу, содержащему поле
-        var contTr = a.parentNode;
-        var contTable = contTr.parentNode; //подымаемся еще на одну ступеньку выше к родителю
-        // Удаляем этот тэг Tr из DOM-дерева
-        contTable.parentNode.removeChild(contTable);
-        // Уменьшаем значение текущего числа полей
+        tr.parentNode.removeChild(tr);
         countOfFields--;
     }
     // Возвращаем false, чтобы не было перехода по сслыке
@@ -40,7 +57,8 @@ function addField() {
         "<option value=\"3\">Сотовый</option>" +
         "<option value=\"4\">Главный</option>" +
         "</select></td>" +
-        "<td><br /><a class=\"glyphicon glyphicon-trash\" onclick=\"return deleteField(this)\" href=\"#\"></a></td>";
+        "<td><a><span class=\"glyphicon glyphicon-trash\" onclick=\"return deleteField(this.parentNode.parentNode.parentNode)\" href=\"#\"></span></a></td><br/>\n" +
+        "    <br/>";
 
     // Добавляем новый узел в конец списка полей
     document.getElementById("parentId").appendChild(tr);

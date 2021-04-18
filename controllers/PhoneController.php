@@ -19,7 +19,7 @@ class PhoneController extends Controller
         $phone=$this->findModel($id);
         $phone->delete();
 
-        return $this->redirect(Yii::$app->request->referrer);
+        return 'Deleted';
     }
 
     protected function findModel($id)

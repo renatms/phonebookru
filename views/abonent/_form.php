@@ -55,8 +55,8 @@ use kartik\date\DatePicker;
                         <?= $form->field($ph, "[$index]group_id")->dropDownList(ArrayHelper::map($group, 'id', 'type'))->label(false) ?>
                     </td>
                     <td>
-                        <?= Html::a('<span class="glyphicon glyphicon-trash"></span>',
-                            ['phone/delete', 'id' => $ph->id],
+                        <?= Html::a('<span data-phone-id='  . $ph->id . ' class="glyphicon glyphicon-trash"></span>',
+                            ['#'],
                             [
                                 'title' => 'Удалить',
                                 'data-confirm' => "Хотите удалить?",

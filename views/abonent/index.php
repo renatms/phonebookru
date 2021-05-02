@@ -1,5 +1,6 @@
 <?php
 
+use app\assets\AbonentAsset;
 use yii\helpers\Html;
 use yii\grid\GridView;
 
@@ -7,9 +8,12 @@ use yii\grid\GridView;
 /* @var $searchModel app\models\AbonentSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
+AbonentAsset::register($this);
+
 $this->title = 'Контакты';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+
 <div class="abonent-index">
 
     <h1><?= Html::encode($this->title) ?></h1>

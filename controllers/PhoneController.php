@@ -4,22 +4,37 @@ namespace app\controllers;
 
 use Yii;
 use app\models\Phone;
+use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
 class PhoneController extends Controller
 {
+
+    public function behaviors()
+    {
+        return [
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'delete' => ['post'],
+                ],
+            ],
+        ];
+    }
+
     public function actionIndex()
     {
         return $this->render('index');
     }
 
-    public function actionDelete($id)
+    public function actionDelete()
     {
+        $id = post('id') ?? '';
         $phone=$this->findModel($id);
         $phone->delete();
 
-        return 'Deleted';
+        return 'Phone is deleted';
     }
 
     protected function findModel($id)

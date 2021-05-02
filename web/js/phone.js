@@ -12,17 +12,13 @@ $(function () {
         if (phoneId !== null) {
             $.ajax({
                 url: '/web/phone/delete',
-                method: 'get',
+                method: 'post',
                 dataType: 'json',
                 data: {id: phoneId},
-                success: function (data) {
-                    alert(data);
-                }
             });
             return false;
         }
 
-        console.log(phoneId);
         return false;
     });
 });

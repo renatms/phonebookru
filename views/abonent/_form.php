@@ -1,5 +1,6 @@
 <?php
 
+use app\assets\PhoneAsset;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\helpers\ArrayHelper;
@@ -12,7 +13,7 @@ use kartik\date\DatePicker;
 /* @var $form yii\widgets\ActiveForm */
 /* @var $update bool */
 
-\app\assets\PhoneAsset::register($this);
+PhoneAsset::register($this);
 ?>
 
 <div class="abonent-form">

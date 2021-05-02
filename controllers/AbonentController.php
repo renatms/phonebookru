@@ -20,6 +20,7 @@ use yii\filters\VerbFilter;
 class AbonentController extends Controller
 {
     private $phoneService;
+
     /**
      * @inheritdoc
      */
@@ -29,7 +30,7 @@ class AbonentController extends Controller
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
-                    'delete' => ['POST'],
+                    'delete' => ['post'],
                 ],
             ],
         ];
@@ -130,11 +131,19 @@ class AbonentController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($id)
+    public function actionDelete()
     {
+        $id = post('id') ?? '';
         $model = $this->findModel($id);
         $model->delete();
-        return $this->redirect(['index']);
+
+        $searchModel = new AbonentSearch();
+        $dataProvider = $searchModel->search([]);
+
+        return $this->renderAjax('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
     }
 
     /**

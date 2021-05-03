@@ -6,20 +6,22 @@ $(function () {
     $("#mask").mask("+7 (999) 999 99 99");
 
     $('body').on('click', '.glyphicon-trash', function () {
-        let tr = this.parentNode.parentNode.parentNode;
-        deleteField(tr);
-        let phoneId = this.getAttribute('data-phone-id');
-        if (phoneId !== null) {
-            $.ajax({
-                url: '/web/phone/delete',
-                method: 'post',
-                dataType: 'json',
-                data: {id: phoneId},
-            });
+        if (confirm('Вы действительно хотите удалить запись?')) {
+            let tr = this.parentNode.parentNode.parentNode;
+            deleteField(tr);
+            let phoneId = this.getAttribute('data-phone-id');
+            if (phoneId !== null) {
+                $.ajax({
+                    url: '/web/phone/delete',
+                    method: 'post',
+                    dataType: 'json',
+                    data: {id: phoneId},
+                });
+                return false;
+            }
+        } else {
             return false;
         }
-
-        return false;
     });
 });
 

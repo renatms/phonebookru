@@ -107,7 +107,6 @@ class AbonentController extends Controller
      */
     public function actionUpdate($id)
     {
-        $update = true;
         $model = $this->findModel($id);
         $phones = $this->findPhones($id);
         $group = Group::find()->all();
@@ -120,7 +119,7 @@ class AbonentController extends Controller
         }
 
         return $this->render('update', [
-            'model' => $model, 'phones' => $phones, 'group' => $group, 'update' => $update
+            'model' => $model, 'phones' => $phones, 'group' => $group, 'update' => true
         ]);
     }
 

@@ -24,7 +24,5 @@ function get($name = null, $defaultValue = null)
 
 function user(): ?\yii\web\IdentityInterface
 {
-    $user = app()->getUser()->identity;
-
-    return $user;
+    return app()->getUser()->identity;
 }

@@ -10,6 +10,8 @@ use app\models\Group;
 use app\models\AbonentSearch;
 use app\models\SignupForm;
 use app\models\LoginForm;
+use yii\db\Exception;
+use yii\db\StaleObjectException;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -63,7 +65,7 @@ class AbonentController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id)
+    public function actionView(int $id)
     {
         return $this->render('view', [
             'model' => $this->findModel($id), 'phone' => $this->findPhones($id)
@@ -82,7 +84,6 @@ class AbonentController extends Controller
             return $this->redirect(['index']);
         }
 
-        $update = false;
         $model = new Abonent();
         $phones = new Phone();
         $post = post();
@@ -94,7 +95,7 @@ class AbonentController extends Controller
         }
 
         return $this->render('create', [
-            'model' => $model, 'phones' => $phones, 'update' => $update
+            'model' => $model, 'phones' => $phones, 'update' => false
         ]);
     }
 
@@ -105,9 +106,8 @@ class AbonentController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id)
+    public function actionUpdate(int $id)
     {
-        $update = true;
         $model = $this->findModel($id);
         $phones = $this->findPhones($id);
         $group = Group::find()->all();
@@ -120,7 +120,7 @@ class AbonentController extends Controller
         }
 
         return $this->render('update', [
-            'model' => $model, 'phones' => $phones, 'group' => $group, 'update' => $update
+            'model' => $model, 'phones' => $phones, 'group' => $group, 'update' => true
         ]);
     }
 
@@ -135,7 +135,12 @@ class AbonentController extends Controller
     {
         $id = post('id') ?? '';
         $model = $this->findModel($id);
-        $model->delete();
+        try {
+            $model->delete();
+        } catch (StaleObjectException $e) {
+        } catch (Exception $e) {
+            throw new NotFoundHttpException('oops, something went wrong while deleting');
+        }
 
         $searchModel = new AbonentSearch();
         $dataProvider = $searchModel->search([]);
@@ -149,7 +154,7 @@ class AbonentController extends Controller
     /**
      * @return string
      */
-    public function actionAbout()
+    public function actionAbout(): string
     {
         $model = new Abonent();
 
@@ -203,7 +208,7 @@ class AbonentController extends Controller
     /**
      * @return \yii\web\Response
      */
-    public function actionLogout()
+    public function actionLogout(): \yii\web\Response
     {
         Yii::$app->user->logout();
 
@@ -217,7 +222,7 @@ class AbonentController extends Controller
      * @return Abonent the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
+    protected function findModel(int $id): Abonent
     {
         if (($model = Abonent::findOne($id)) !== null) {
             return $model;
@@ -231,7 +236,7 @@ class AbonentController extends Controller
      * @return array|\yii\db\ActiveRecord[]
      * @throws NotFoundHttpException
      */
-    protected function findPhones($id)
+    protected function findPhones($id): array
     {
         if (($phone = Phone::find()->notDeleted()->forAbonent($id)->all()) !== null) {
             return $phone;

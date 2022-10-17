@@ -19,12 +19,12 @@ class m190117_153231_abonent extends Migration
             'user_id' => $this->integer(11)->notNull(),
         ]);
 
-        $this->addForeignKey('user_id', 'abonent', 'user_id',
-            'user', 'id', 'CASCADE', 'CASCADE');
     }
 
     public function safeDown()
     {
+        $this->dropForeignKey('fk_group', 'phone');
+        $this->dropForeignKey('fk_phone', 'phone');
         $this->dropTable('abonent');
     }
 }

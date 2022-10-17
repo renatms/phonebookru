@@ -15,9 +15,9 @@ class m190117_153600_phone extends Migration
             'updated_at' => $this->timestamp(),
             'is_deleted' => $this->boolean()->defaultValue(0)
         ]);
-        $this->addForeignKey('abonent_id', 'phone', 'abonent_id',
+        $this->addForeignKey('fk_phone', 'phone', 'abonent_id',
             'abonent', 'id', 'CASCADE', 'CASCADE');
-        $this->addForeignKey('group_id', 'phone', 'group_id',
+        $this->addForeignKey('fk_group', 'phone', 'group_id',
             'group', 'id', 'CASCADE', 'CASCADE');
 
     }

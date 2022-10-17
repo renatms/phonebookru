@@ -21,12 +21,6 @@ class m210130_174409_create_table_abonent_has_phone extends Migration
             'phone_id' => $this->integer()->notNull()
         ]);
 
-        $this->addForeignKey('fk_abonent_id', self::TABLE_NAME, 'abonent_id',
-            self::ABONENT, 'id', 'CASCADE', 'CASCADE');
-
-        $this->addForeignKey('fk_phone_id', self::TABLE_NAME, 'phone_id',
-            self::PHONE, 'id', 'CASCADE', 'CASCADE');
-
     }
 
     /**
@@ -34,8 +28,6 @@ class m210130_174409_create_table_abonent_has_phone extends Migration
      */
     public function safeDown()
     {
-        $this->dropForeignKey('fk_abonent_id', self::TABLE_NAME);
-        $this->dropForeignKey('fk_phone_id', self::TABLE_NAME);
         $this->dropTable(self::TABLE_NAME);
     }
 

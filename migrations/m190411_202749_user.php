@@ -31,7 +31,6 @@ class m190411_202749_user extends Migration
      */
     public function safeDown()
     {
-        echo "m190411_202749_user cannot be reverted.\n";
         $this->dropTable('user');
     }
 

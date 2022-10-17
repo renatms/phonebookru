@@ -10,6 +10,8 @@ use app\models\Group;
 use app\models\AbonentSearch;
 use app\models\SignupForm;
 use app\models\LoginForm;
+use yii\db\Exception;
+use yii\db\StaleObjectException;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -82,7 +84,6 @@ class AbonentController extends Controller
             return $this->redirect(['index']);
         }
 
-        $update = false;
         $model = new Abonent();
         $phones = new Phone();
         $post = post();
@@ -94,7 +95,7 @@ class AbonentController extends Controller
         }
 
         return $this->render('create', [
-            'model' => $model, 'phones' => $phones, 'update' => $update
+            'model' => $model, 'phones' => $phones, 'update' => false
         ]);
     }
 
@@ -107,7 +108,6 @@ class AbonentController extends Controller
      */
     public function actionUpdate($id)
     {
-        $update = true;
         $model = $this->findModel($id);
         $phones = $this->findPhones($id);
         $group = Group::find()->all();
@@ -120,7 +120,7 @@ class AbonentController extends Controller
         }
 
         return $this->render('update', [
-            'model' => $model, 'phones' => $phones, 'group' => $group, 'update' => $update
+            'model' => $model, 'phones' => $phones, 'group' => $group, 'update' => true
         ]);
     }
 
@@ -130,12 +130,17 @@ class AbonentController extends Controller
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
+     * @throws Exception
      */
     public function actionDelete()
     {
         $id = post('id') ?? '';
         $model = $this->findModel($id);
-        $model->delete();
+        try {
+            $model->delete();
+        } catch (\Throwable $e) {
+            throw new Exception($e->getMessage());
+        }
 
         $searchModel = new AbonentSearch();
         $dataProvider = $searchModel->search([]);

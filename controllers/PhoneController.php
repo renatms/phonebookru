@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use Yii;
 use app\models\Phone;
+use yii\db\StaleObjectException;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -28,6 +29,11 @@ class PhoneController extends Controller
         return $this->render('index');
     }
 
+    /**
+     * @throws \Throwable
+     * @throws StaleObjectException
+     * @throws NotFoundHttpException
+     */
     public function actionDelete()
     {
         $id = post('id') ?? '';

@@ -26,9 +26,9 @@ class PhoneQuery extends ActiveQuery
      * @param $id
      * @return $this
      */
-    public function forAbonent($id)
+    public function forContact($id)
     {
         return $this
-            ->andWhere(['abonent_id' => $id]);
+            ->andWhere(['contact_id' => $id]);
     }
 }

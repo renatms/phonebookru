@@ -3,13 +3,12 @@
 use yii\db\Migration;
 
 /**
- * Class m210130_174409_create_table_abonent_has_phone
+ * Class m210130_174409_create_table_contact_has_phone
  */
-class m210130_174409_create_table_abonent_has_phone extends Migration
+class m210130_174409_create_table_contact_has_phone extends Migration
 {
-    const TABLE_NAME = '{{%abonent_has_phone}}';
-    const ABONENT = 'abonent';
-    const PHONE = 'phone';
+    const TABLE_NAME = '{{%contact_has_phone}}';
+
     /**
      * {@inheritdoc}
      */
@@ -17,7 +16,7 @@ class m210130_174409_create_table_abonent_has_phone extends Migration
     {
         $this->createTable(self::TABLE_NAME,
         [
-            'abonent_id' => $this->integer()->notNull(),
+            'contact_id' => $this->integer()->notNull(),
             'phone_id' => $this->integer()->notNull()
         ]);
 

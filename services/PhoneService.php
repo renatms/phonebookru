@@ -9,7 +9,7 @@ use yii\helpers\ArrayHelper;
 
 class PhoneService
 {
-    public function savePhone($abonentId, $phones, $prePones = [])
+    public function savePhone($contactId, $phones, $prePones = [])
     {
         $oldPhones = ArrayHelper::toArray($prePones);
 
@@ -27,7 +27,7 @@ class PhoneService
             if (!empty($newPhone['number'])) {
 
                 $phone = new Phone();
-                $phone->abonent_id = $abonentId;
+                $phone->contact_id = $contactId;
                 $phone->number = $newPhone['number'];
                 $phone->group_id = $newPhone['group_id'];
                 $phone->save();

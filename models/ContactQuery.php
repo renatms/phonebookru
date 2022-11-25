@@ -11,7 +11,7 @@ namespace app\models;
 use Yii;
 use yii\db\ActiveQuery;
 
-class AbonentQuery extends ActiveQuery
+class ContactQuery extends ActiveQuery
 {
     /**
      * @return $this

@@ -10,14 +10,14 @@ use yii2tech\ar\softdelete\SoftDeleteBehavior;
  * This is the model class for table "phone".
  *
  * @property int $id
- * @property int $abonent_id
+ * @property int $contact_id
  * @property int $group_id
  * @property string $number
  * @property string $created_at
  * @property string $updated_at
  * @property int $is_deleted
  *
- * @property Abonent $abonent
+ * @property Contact $contact
  * @property Group $group
  */
 class Phone extends \yii\db\ActiveRecord
@@ -36,9 +36,9 @@ class Phone extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['abonent_id', 'group_id'], 'integer'],
+            [['contact_id', 'group_id'], 'integer'],
             [['number'], 'string', 'max' => 20],
-            [['abonent_id'], 'exist', 'skipOnError' => true, 'targetClass' => Abonent::className(), 'targetAttribute' => ['abonent_id' => 'id']],
+            [['contact_id'], 'exist', 'skipOnError' => true, 'targetClass' => Contact::className(), 'targetAttribute' => ['contact_id' => 'id']],
             [['group_id'], 'exist', 'skipOnError' => true, 'targetClass' => Group::className(), 'targetAttribute' => ['group_id' => 'id']],
         ];
     }
@@ -50,7 +50,7 @@ class Phone extends \yii\db\ActiveRecord
     {
         return [
             'id' => '№',
-            'abonent_id' => 'Abonent ID',
+            'contact_id' => 'Contact ID',
             'group_id' => 'Тип номера',
             'number' => 'Номер телефона',
             'created_at' => 'Создан',
@@ -82,12 +82,9 @@ class Phone extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getAbonent()
+    public function getContact(): \yii\db\ActiveQuery
     {
-        return $this->hasOne(Abonent::className(), ['id' => 'abonent_id']);
+        return $this->hasOne(Contact::className(), ['id' => 'contact_id']);
     }
 
     /**

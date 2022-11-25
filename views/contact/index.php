@@ -1,20 +1,20 @@
 <?php
 
-use app\assets\AbonentAsset;
+use app\assets\ContactAsset;
 use yii\helpers\Html;
 use yii\grid\GridView;
 
 /* @var $this yii\web\View */
-/* @var $searchModel app\models\AbonentSearch */
+/* @var $searchModel app\models\ContactSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-AbonentAsset::register($this);
+ContactAsset::register($this);
 
 $this->title = 'Контакты';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
-<div class="abonent-index">
+<div class="contact-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>

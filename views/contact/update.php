@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Abonent */
+/* @var $model app\models\Contact */
 /* @var $phones app\models\Phone[] */
 /* @var $group app\models\Group[] */
 /* @var $update bool */
@@ -13,7 +13,7 @@ $this->params['breadcrumbs'][] = ['label' => 'Контакты', 'url' => ['inde
 $this->params['breadcrumbs'][] = ['label' => $model->first_name . ' ' . $model->second_name, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Обновить';
 ?>
-<div class="abonent-update">
+<div class="contact-update">
 
     <h1><?= Html::encode($this->title) ?></h1>
 

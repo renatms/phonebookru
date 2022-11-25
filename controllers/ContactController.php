@@ -4,10 +4,10 @@ namespace app\controllers;
 
 use app\services\PhoneService;
 use Yii;
-use app\models\Abonent;
+use app\models\Contact;
 use app\models\Phone;
 use app\models\Group;
-use app\models\AbonentSearch;
+use app\models\ContactSearch;
 use app\models\SignupForm;
 use app\models\LoginForm;
 use yii\db\Exception;
@@ -17,9 +17,9 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * AbonentController implements the CRUD actions for Abonent model.
+ * ContactController implements the CRUD actions for Contact model.
  */
-class AbonentController extends Controller
+class ContactController extends Controller
 {
     private $phoneService;
 
@@ -45,12 +45,12 @@ class AbonentController extends Controller
     }
 
     /**
-     * Lists all Abonent models.
+     * Lists all Contact models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new AbonentSearch();
+        $searchModel = new ContactSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -60,7 +60,7 @@ class AbonentController extends Controller
     }
 
     /**
-     * Displays a single Abonent model.
+     * Displays a single Contact model.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
@@ -73,7 +73,7 @@ class AbonentController extends Controller
     }
 
     /**
-     * Creates a new Abonent model.
+     * Creates a new Contact model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
@@ -84,7 +84,7 @@ class AbonentController extends Controller
             return $this->redirect(['index']);
         }
 
-        $model = new Abonent();
+        $model = new Contact();
         $phones = new Phone();
         $post = post();
 
@@ -100,7 +100,7 @@ class AbonentController extends Controller
     }
 
     /**
-     * Updates an existing Abonent model.
+     * Updates an existing Contact model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -125,7 +125,7 @@ class AbonentController extends Controller
     }
 
     /**
-     * Deletes an existing Abonent model.
+     * Deletes an existing Contact model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -134,7 +134,7 @@ class AbonentController extends Controller
      */
     public function actionDelete()
     {
-        $id = post('id') ?? '';
+        $id = post('id') ?? Yii::$app->request->get('id');
         $model = $this->findModel($id);
         try {
             $model->delete();
@@ -142,7 +142,7 @@ class AbonentController extends Controller
             throw new Exception($e->getMessage());
         }
 
-        $searchModel = new AbonentSearch();
+        $searchModel = new ContactSearch();
         $dataProvider = $searchModel->search([]);
 
         return $this->renderAjax('index', [
@@ -156,7 +156,7 @@ class AbonentController extends Controller
      */
     public function actionAbout()
     {
-        $model = new Abonent();
+        $model = new Contact();
 
         return $this->render('about', [
             'model' => $model
@@ -216,15 +216,15 @@ class AbonentController extends Controller
     }
 
     /**
-     * Finds the Abonent model based on its primary key value.
+     * Finds the Contact model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Abonent the loaded model
+     * @return Contact the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Abonent::findOne($id)) !== null) {
+        if (($model = Contact::findOne($id)) !== null) {
             return $model;
         }
 
@@ -238,7 +238,7 @@ class AbonentController extends Controller
      */
     protected function findPhones($id)
     {
-        if (($phone = Phone::find()->notDeleted()->forAbonent($id)->all()) !== null) {
+        if (($phone = Phone::find()->notDeleted()->forContact($id)->all()) !== null) {
             return $phone;
         }
 

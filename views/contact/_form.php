@@ -7,7 +7,7 @@ use yii\helpers\ArrayHelper;
 use kartik\date\DatePicker;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Abonent */
+/* @var $model app\models\Contact */
 /* @var $phones app\models\Phone[] */
 /* @var $group app\models\Group[] */
 /* @var $form yii\widgets\ActiveForm */
@@ -16,7 +16,7 @@ use kartik\date\DatePicker;
 PhoneAsset::register($this);
 ?>
 
-<div class="abonent-form">
+<div class="contact-form">
 
     <?php $form = ActiveForm::begin(); ?>
 

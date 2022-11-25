@@ -7,9 +7,9 @@ use yii\base\Model;
 use yii\data\ActiveDataProvider;
 
 /**
- * AbonentSearch represents the model behind the search form of `app\models\Abonent`.
+ * ContactSearch represents the model behind the search form of `app\models\Contact`.
  */
-class AbonentSearch extends Abonent
+class ContactSearch extends Contact
 {
     /**
      * @inheritdoc
@@ -40,7 +40,7 @@ class AbonentSearch extends Abonent
      */
     public function search($params)
     {
-        $query = Abonent::find()->notDeleted()->forAuthorized();
+        $query = Contact::find()->notDeleted()->forAuthorized();
 
         // add conditions that should always apply here
 

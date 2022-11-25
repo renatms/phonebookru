@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Abonent */
+/* @var $model app\models\Contact */
 /* @var $phone app\models\Phone[] */
 /* @var $group app\models\Group[] */
 
@@ -12,7 +12,7 @@ $this->title = $model->first_name . ' ' . $model->second_name;
 $this->params['breadcrumbs'][] = ['label' => 'Контакты', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="abonent-view">
+<div class="contact-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
 

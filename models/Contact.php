@@ -7,7 +7,7 @@ use yii\db\ActiveRecord;
 use yii2tech\ar\softdelete\SoftDeleteBehavior;
 
 /**
- * This is the model class for table "abonent".
+ * This is the model class for table "contact".
  *
  * @property int $id
  * @property string $first_name
@@ -21,14 +21,14 @@ use yii2tech\ar\softdelete\SoftDeleteBehavior;
  *
  * @property Phone[] $phones
  */
-class Abonent extends ActiveRecord
+class Contact extends ActiveRecord
 {
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return 'abonent';
+        return 'contact';
     }
 
     /**
@@ -69,7 +69,7 @@ class Abonent extends ActiveRecord
      */
     public function getPhones()
     {
-        return $this->hasMany(Phone::className(), ['abonent_id' => 'id']);
+        return $this->hasMany(Phone::className(), ['contact_id' => 'id']);
     }
 
     /**
@@ -140,10 +140,10 @@ class Abonent extends ActiveRecord
     }
 
     /**
-     * @return AbonentQuery
+     * @return ContactQuery
      */
     public static function find()
     {
-        return new AbonentQuery(get_called_class());
+        return new ContactQuery(get_called_class());
     }
 }

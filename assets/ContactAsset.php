@@ -15,7 +15,7 @@ use yii\web\AssetBundle;
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @since 2.0
  */
-class AbonentAsset extends AssetBundle
+class ContactAsset extends AssetBundle
 {
     public $basePath = '@webroot';
     public $baseUrl = '@web';
@@ -23,7 +23,7 @@ class AbonentAsset extends AssetBundle
         'css/site.css',
     ];
     public $js = [
-        'js/abonent.js',
+        'js/contact.js',
     ];
     public $depends = [
         'yii\web\YiiAsset',

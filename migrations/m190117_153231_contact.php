@@ -2,12 +2,13 @@
 
 use yii\db\Migration;
 
-class m190117_153231_abonent extends Migration
+class m190117_153231_contact extends Migration
 {
+    const TABLE = 'contact';
 
     public function safeUp()
     {
-        $this->createTable('abonent', [
+        $this->createTable(self::TABLE, [
             'id' => $this->primaryKey(),
             'first_name' => $this->string(50)->notNull(),
             'second_name' => $this->string(50)->notNull(),
@@ -23,8 +24,6 @@ class m190117_153231_abonent extends Migration
 
     public function safeDown()
     {
-        $this->dropForeignKey('fk_group', 'phone');
-        $this->dropForeignKey('fk_phone', 'phone');
-        $this->dropTable('abonent');
+        $this->dropTable(self::TABLE);
     }
 }
